@@ -1,0 +1,89 @@
+
+button,
+.btn,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	border:0px;
+	border-radius:3px;
+	line-height: 1;
+	cursor:pointer; 
+	transition:ease all .2s;
+	display:inline-block;
+	margin-bottom:10px;
+
+	// Medium size as default
+	padding:10px 20px;
+	font-size:16px;
+	margin-right:10px;
+
+	// Primary colors and style + hover
+	background-color: $color__prim;
+	color: $color__button-prim;
+
+	&:hover {
+		background-color: $color__sec;
+		border-color: $color__sec;
+		color:$color__button-prim;
+	}
+
+	&:active,
+	&:focus {
+		background-color: $color__sec;
+		color: $color__button-prim;
+	}
+
+	// Sizes
+	&.btn-l {
+		padding:15px 30px;
+		font-size:20px;
+		margin-right:15px;
+	}
+
+	&.btn-s {
+		padding:7px 15px;
+		font-size:14px;
+		margin-right:7px;
+	}
+
+	// Styles
+	&.btn-sec {	
+		background: $color__sec;
+		color: $color__button-sec;
+
+		&:hover {
+			background-color: $color__prim;
+			border-color: $color__prim;
+			color:$color__button-sec;
+		}
+	
+		&:active,
+		&:focus {
+			color:$color__button-sec;
+			background-color: $color__prim;
+		}
+	}
+
+	&.btn-outline {
+		border: 1px solid;
+		border-color: $color__prim;
+		color: $color__prim;
+		background-color:unset;
+
+		&:hover {
+			background-color: $color__prim;
+			border-color: $color__prim;
+			color:white;
+		}
+	
+		&:active,
+		&:focus {
+			background-color: $color__prim;
+			color:white;
+		}
+	}
+
+	&.btn-inline {
+		display:inline-block;
+	}
+}
