@@ -7,7 +7,7 @@
 
 <script>
   import Test from './components/Test.vue'
-  
+
 
   export default {
     components: {
@@ -18,9 +18,9 @@
     }
   }
 </script>
+
 <style>
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
-
 </style>
