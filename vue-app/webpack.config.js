@@ -34,16 +34,16 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-           loader: 'css-loader',
-           options: {
-             sourceMap: true,
-           }
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            }
           },
           {
-           loader: 'postcss-loader',
-           options: {
-             sourceMap: true
-           }
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
           }
         ]
       },
