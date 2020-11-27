@@ -4,12 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
+  devtool: 'inline-source-map',
   entry: './src/main.js',
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -29,12 +29,6 @@ module.exports = {
       }
     ]
   },
-  // devServer: {
-  //   contentBase: path.join(__dirname, 'dist'),
-  //   compress: true,
-  //   open: true,
-  //   port: 8080
-  // },
   plugins: [
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
