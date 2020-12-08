@@ -12,6 +12,30 @@ function vue_dashboard_scripts() {
       true
     );
 
+    $args = array(
+      'post_type' => 'websites',
+      'posts_per_page' => -1
+    );
+
+    $websites = get_posts( $args );
+
+    foreach ($websites as $site) {
+      $site->custom_fields = get_fields( $site->ID );
+    }
+
+    global $post;
+
+    wp_localize_script(
+      'vue_dashboard',
+      'wpData',
+      array(
+        'template_directory_uri' => get_stylesheet_directory_uri(),
+        'rest_url' => untrailingslashit( esc_url_raw( rest_url() ) ),
+        'app_path' => $post->post_name,
+        'posts' => $websites
+      )
+    );
+
     wp_register_style('vue_styles', 'http://localhost:8080/main.css');
 
     wp_enqueue_style('vue_styles');

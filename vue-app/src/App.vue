@@ -13,6 +13,11 @@
     components: {
       Test
     },
+    data() {
+      return {
+        wpData: wpData
+      }
+    },
     mounted() {
       console.log( 'test' )
     }
