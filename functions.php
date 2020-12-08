@@ -202,6 +202,10 @@ require get_template_directory() . '/inc/functions/optionpage.php';
 
 require get_template_directory() . '/inc/functions/removecomments.php';
 
+/**
+ * Vue Dashboard
+ */
+require  get_template_directory() . '/inc/dashboard/enqueue.php';
 
 /**
  *	Custom posttype

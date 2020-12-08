@@ -53,8 +53,6 @@ get_header();
 		endif;
 		?>
 
-		<div id="vueWp"></div>
-
 		</main><!-- #main -->
 	</div><!-- #primary -->
 

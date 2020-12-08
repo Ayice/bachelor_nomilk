@@ -20,6 +20,10 @@
 </script>
 
 <style>
+  h1 {
+    color: blue;
+  }
+
   @tailwind base;
   @tailwind components;
   @tailwind utilities;

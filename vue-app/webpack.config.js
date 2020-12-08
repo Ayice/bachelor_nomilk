@@ -56,5 +56,11 @@ module.exports = {
       template: './dist/index.html'
     }),
     new MiniCssExtractPlugin()
-  ]
+  ],
+  resolve: {
+		alias: {
+			vue$: 'vue/dist/vue.esm.js'
+		},
+		extensions: [ '*', '.js', '.vue', '.json' ]
+	},
 };

@@ -18,15 +18,6 @@ function enqueue_scripts() {
     wp_enqueue_script('OwlCarousel', get_template_directory_uri() . '/inc/vendor/owl/owl.carousel.min.js', true );
     wp_enqueue_script('CustomOwl', get_template_directory_uri() . '/inc/js/custom-owl.js', '', '', true );
 
-    wp_register_script(
-      'vue_wp',
-      'http://localhost:8080/dist/index.js',
-      array(),
-      false,
-      true
-    );
-
-    wp_enqueue_script('vue_wp');
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
