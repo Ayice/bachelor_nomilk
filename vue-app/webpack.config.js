@@ -10,6 +10,18 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: 'http://nomilkcustomeroverview.local/'
+  },
+  devServer: {
+    disableHostCheck: true,
+    contentBase: path.join(__dirname, 'dist'),
+    host: 'localhost',
+    port: 8080,
+    allowedHosts: [
+      'nomilkcustomeroverview.local',
+      'bachelor.local'
+    ],
+    publicPath: 'http://nomilkcustomeroverview.local/'
   },
   module: {
     rules: [
@@ -20,14 +32,7 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['@babel/preset-env', { targets: "defaults" }]
-            ]
-          }
-        }
+        loader: 'babel-loader'
       },
       {
         test: /\.css$/,

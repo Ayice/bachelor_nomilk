@@ -205,7 +205,7 @@ require get_template_directory() . '/inc/functions/removecomments.php';
 /**
  * Vue Dashboard
  */
-require  get_template_directory() . '/inc/dashboard/enqueue.php';
+require_once  get_template_directory() . '/inc/dashboard/enqueue.php';
 
 /**
  *	Custom posttype

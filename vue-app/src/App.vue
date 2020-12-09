@@ -1,32 +1,40 @@
 <template>
   <div class="mt-5">
-    Hellow Bish
-    <test></test>
+    <p v-for="site in test">{{site.id}}</p>
   </div>
 </template>
 
 <script>
-  import Test from './components/Test.vue'
-
+  import { getLightHouseData } from './utils/api';
 
   export default {
-    components: {
-      Test
-    },
     data() {
       return {
+        test: [],
         wpData: wpData
       }
     },
     mounted() {
-      console.log( 'test' )
+      this.wpData.posts.forEach(website => {
+        this.fetchLHData(website.custom_fields.domain);
+      });
+    },
+    methods: {
+      fetchLHData(website) {
+        getLightHouseData(website)
+          .then(res => {
+            console.log(res);
+
+            this.test.push(res)
+          })
+      }
     }
   }
 </script>
 
 <style>
   h1 {
-    color: blue;
+    color: red;
   }
 
   @tailwind base;
