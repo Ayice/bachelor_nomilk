@@ -41,7 +41,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true,
+              sourceMap: true
             }
           },
           {
@@ -51,7 +51,7 @@ module.exports = {
             }
           }
         ]
-      },
+      }
     ]
   },
   plugins: [
@@ -61,11 +61,5 @@ module.exports = {
       template: './dist/index.html'
     }),
     new MiniCssExtractPlugin()
-  ],
-  resolve: {
-		alias: {
-			vue$: 'vue/dist/vue.esm.js'
-		},
-		extensions: [ '*', '.js', '.vue', '.json' ]
-	},
+  ]
 };

@@ -1,35 +1,41 @@
 <template>
   <div class="mt-5">
-    <p v-for="site in test">{{site.id}}</p>
+    <p
+      v-for="site in test"
+      :key="site.id"
+      class="test">
+      {{ site.id }}
+    </p>
   </div>
 </template>
 
 <script>
-  import { getLightHouseData } from './utils/api';
+import { getLightHouseData } from './utils/api';
 
-  export default {
-    data() {
-      return {
-        test: [],
-        wpData: wpData
-      }
-    },
-    mounted() {
-      this.wpData.posts.forEach(website => {
-        this.fetchLHData(website.custom_fields.domain);
-      });
-    },
-    methods: {
-      fetchLHData(website) {
-        getLightHouseData(website)
-          .then(res => {
-            console.log(res);
+export default {
+  data() {
+    return {
+      test: [],
+      // eslint-disable-next-line
+      wpData: wpData
+    };
+  },
+  mounted() {
+    this.wpData.posts.forEach(website => {
+      this.fetchLHData(website.custom_fields.domain);
+    });
+  },
+  methods: {
+    fetchLHData(website) {
+      getLightHouseData(website)
+        .then(res => {
+          console.log('ghdafæg');
 
-            this.test.push(res)
-          })
-      }
+          this.test.push(res);
+        });
     }
   }
+};
 </script>
 
 <style>
