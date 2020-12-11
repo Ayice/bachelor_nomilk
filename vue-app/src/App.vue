@@ -1,5 +1,6 @@
 <template>
-  <div class="mt-5">
+  <div class="">
+    <side-bar></side-bar>
     <p
       v-for="site in posts"
       :key="site.id"
@@ -11,8 +12,12 @@
 
 <script>
 import { getLightHouseData } from './utils/api';
+import SideBar from './components/SideBar.vue';
 
 export default {
+  components: {
+    SideBar
+  },
   data() {
     return {
       posts: [],
