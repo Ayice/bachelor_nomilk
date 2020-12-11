@@ -7,6 +7,10 @@
       class="test">
       {{ site.id }}
     </p>
+  <div>
+    <div class="w-3/4 m-auto">
+      <website-table></website-table>
+    </div>
   </div>
 </template>
 
@@ -14,15 +18,18 @@
 import { getLightHouseData } from './utils/api';
 import SideBar from './components/SideBar.vue';
 
+import WebsiteTable from './components/WebsiteTable.vue';
+
 export default {
   components: {
-    SideBar
+    SideBar,
+    WebsiteTable
   },
   data() {
     return {
-      posts: [],
       // eslint-disable-next-line
-      wpData: wpData
+      wpData: wpData,
+      posts: []
     };
   },
   mounted() {
@@ -42,8 +49,8 @@ export default {
 </script>
 
 <style>
-  h1 {
-    color: red;
+  body {
+    background-color:#eff3ef
   }
 
   @tailwind base;
