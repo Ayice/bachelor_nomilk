@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <p
-      v-for="site in test"
+      v-for="site in posts"
       :key="site.id"
       class="test">
       {{ site.id }}
@@ -15,7 +15,7 @@ import { getLightHouseData } from './utils/api';
 export default {
   data() {
     return {
-      test: [],
+      posts: [],
       // eslint-disable-next-line
       wpData: wpData
     };
@@ -29,9 +29,7 @@ export default {
     fetchLHData(website) {
       getLightHouseData(website)
         .then(res => {
-          console.log('ghdafæg');
-
-          this.test.push(res);
+          this.posts.push(res);
         });
     }
   }
