@@ -1,23 +1,25 @@
 <template>
-  <div class="mt-5">
-    <p
-      v-for="site in posts"
-      :key="site.id"
-      class="test">
-      {{ site.id }}
-    </p>
+  <div>
+    <div class="w-3/4 m-auto">
+      <website-table></website-table>
+    </div>
   </div>
 </template>
 
 <script>
 import { getLightHouseData } from './utils/api';
 
+import WebsiteTable from './components/WebsiteTable.vue';
+
 export default {
+  components: {
+    WebsiteTable
+  },
   data() {
     return {
-      posts: [],
       // eslint-disable-next-line
-      wpData: wpData
+      wpData: wpData,
+      posts: []
     };
   },
   mounted() {
@@ -37,8 +39,8 @@ export default {
 </script>
 
 <style>
-  h1 {
-    color: red;
+  body {
+    background-color:#eff3ef
   }
 
   @tailwind base;
