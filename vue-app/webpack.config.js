@@ -47,8 +47,7 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              sourceMap: true,
-              sprøjtefar: true,
+              sourceMap: true
             }
           }
         ]
