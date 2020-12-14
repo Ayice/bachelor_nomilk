@@ -10,7 +10,7 @@
             <div>
                 <img
             class="mb-6 w-full"
-            src="http://bachelor.local/wp-content/uploads/2020/12/Group-915.svg"
+            src="http://bachelor.local/wp-content/uploads/2020/12/nomilk.svg"
             alt="NoMilk Logo"><!-- logo image her -->
             </div>
         
