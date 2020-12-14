@@ -12,7 +12,6 @@
 
 <script>
 import SideBar from './components/SideBar.vue';
-
 import WebsiteTable from './components/WebsiteTable.vue';
 
 export default {
