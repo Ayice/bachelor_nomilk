@@ -30,7 +30,6 @@ function vue_dashboard_scripts()
       'template_directory_uri' => get_stylesheet_directory_uri(),
       'rest_url' => untrailingslashit(esc_url_raw(rest_url())),
       'posts' => $websites,
-      'images' => wp_get_attachment_image_src($attachment_id, $size = 'small')
     )
   );
 

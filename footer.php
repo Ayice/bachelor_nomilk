@@ -14,7 +14,6 @@
 	</div><!-- #content -->
 
 	<footer id="colophon" class="site-footer">
-		Footer :-)
 	</footer><!-- #colophon -->
 </div><!-- #page -->
 
