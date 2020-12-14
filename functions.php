@@ -239,7 +239,7 @@ function cptui_register_my_cpts_websites()
     "description" => "",
     "publicly_queryable" => true,
     "show_ui" => true,
-    "rest_base" => "",
+    "rest_base" => "websites",
     "rest_controller_class" => "WP_REST_Posts_Controller",
     "has_archive" => true,
     "show_in_menu" => true,
@@ -264,3 +264,12 @@ function cptui_register_my_cpts_websites()
 }
 
 add_action('init', 'cptui_register_my_cpts_websites');
+
+
+/**
+ * Use ACF in the Rest Api
+ */
+
+add_filter( 'acf/rest_api/field_settings/show_in_rest', '__return_true' );
+
+add_filter( 'acf/rest_api/field_settings/edit_in_rest', '__return_true' );

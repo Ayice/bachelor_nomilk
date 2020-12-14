@@ -4,7 +4,9 @@
       {{ website.custom_fields.domain }}
     </td>
 
-    <td class="px-2">
+    <td
+      v-if="filters.showPerformance"
+      class="px-2">
       <transition
         name="fade"
         mode="out-in">
@@ -22,7 +24,9 @@
       </transition>
     </td>
 
-    <td class="px-2">
+    <td
+      v-if="filters.showSeo"
+      class="px-2">
       <transition
         name="fade"
         mode="out-in">
@@ -40,12 +44,14 @@
       </transition>
     </td>
 
-    <td class="px-2">
+    <td
+      v-if="filters.showWordFence"
+      class="px-2">
       {{ website.custom_fields.google_analytics_api_key }}
     </td>
 
     <td
-      class="px-2"
+      class="px-2 relative"
       @click="copySFTPData">
       <input
         id="sftpData"
@@ -57,12 +63,12 @@
         class="clipboard w-10"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        viewBox="0 0 24 24"
+        viewBox="4 -5 35 35"
         stroke="currentColor">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-width="2"
+          stroke-width="1"
           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
 
@@ -71,16 +77,20 @@
         mode="in-out">
         <span
           v-if="copied"
-          class="absolute font-bold text-green-500">Copied!
+          class="left-0 z-10 shadow absolute font-bold text-green-500 bg-white px-3 py-2">Copied!
         </span>
       </transition>
     </td>
 
-    <td class="px-2">
+    <td
+      v-if="filters.showConversionRate"
+      class="px-2">
       {{ website.ID }}
     </td>
 
-    <td class="px-2">
+    <td
+      v-if="filters.showUpTime"
+      class="px-2">
       {{ website.ID }}
     </td>
   </tr>
@@ -97,6 +107,10 @@ export default {
   },
   props: {
     website: {
+      type: Object,
+      required: true
+    },
+    filters: {
       type: Object,
       required: true
     }
@@ -138,8 +152,8 @@ export default {
   opacity: 0;
 }
 
-.slide-up-enter-active{
-  transition: transform .5s;
+.slide-up-enter-active, .slide-up-leave-active{
+  transition: transform .3s;
 }
 .slide-up-enter, .slide-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
   transform: translateY(25px)
@@ -147,10 +161,5 @@ export default {
 
 .clipboard {
   fill: transparent;
-}
-
-.clipboard :hover {
-  transition: .1s ease-in;
-  fill: rgba(29, 29, 29, 0.487);
 }
 </style>

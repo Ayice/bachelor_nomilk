@@ -1,65 +1,80 @@
 <template>
-  <div class="shadow p-6 max-w-full bg-white rounded-lg flex flex-wrap">
-    <table-header
+  <div class="p-6 flex flex-wrap">
+    <options
       class="mb-5"
-      :search.sync="search">
-    </table-header>
+      :search.sync="search"
+      :filters="filters"
+      @update:filters="handleFilterUpdate">
+    </options>
 
-    <table
-      v-if="websites.length"
-      class="w-full text-sm">
-      <tr class="text-left bg-gray-100 px-2">
-        <th class="px-2">
-          Domain
-        </th>
+    <div class="shadow w-full bg-white rounded-lg flex flex-wrap">
+      <table
+        v-if="websites.length"
+        class="w-full text-sm">
+        <tr class="text-left bg-gray-100 px-2">
+          <th class="px-2">
+            Domain
+          </th>
 
-        <th class="px-2">
-          Performance
-        </th>
+          <th
+            v-if="filters.showPerformance"
+            class="px-2">
+            Performance
+          </th>
 
-        <th class="px-2">
-          SEO
-        </th>
+          <th
+            v-if="filters.showSeo"
+            class="px-2">
+            SEO
+          </th>
 
-        <th class="px-2">
-          WordFence
-        </th>
+          <th
+            v-if="filters.showWordFence"
+            class="px-2">
+            WordFence
+          </th>
 
-        <th class="px-2">
-          Sftp Data
-        </th>
+          <th class="px-2">
+            Sftp Data
+          </th>
 
-        <th class="px-2">
-          Conversion Rate
-        </th>
+          <th
+            v-if="filters.showConversionRate"
+            class="px-2">
+            Conversion Rate
+          </th>
 
-        <th class="px-2">
-          Uptime
-        </th>
-      </tr>
+          <th
+            v-if="filters.showUpTime"
+            class="px-2">
+            Uptime
+          </th>
+        </tr>
 
-      <website-table-item
-        v-for="(website, i) in websites"
-        :key="website.ID"
-        :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
-        :website="website">
-      </website-table-item>
-    </table>
+        <website-table-item
+          v-for="(website, i) in websites"
+          :key="website.ID"
+          :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
+          :filters="filters"
+          :website="website">
+        </website-table-item>
+      </table>
 
-    <div
-      v-else
-      class="w-full">
-      <p
-        v-if="!search"
-        class="text-2xl">
-        There are no websites...
-      </p>
-
-      <p
+      <div
         v-else
-        class="text-2xl">
-        No domains match the search word
-      </p>
+        class="p-10 w-full">
+        <p
+          v-if="!search"
+          class="text-2xl">
+          There are no websites...
+        </p>
+
+        <p
+          v-else
+          class="text-2xl">
+          No domains match the search word.
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -67,19 +82,26 @@
 <script>
 import { getLightHouseData } from '../utils/api';
 
-import TableHeader from './TableHeader.vue';
+import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
 
 export default {
   components: {
-    TableHeader,
+    Options,
     WebsiteTableItem
   },
   data() {
     return {
       // eslint-disable-next-line
       posts: wpData.posts,
-      search: ''
+      search: '',
+      filters: {
+        showPerformance: true,
+        showSeo: true,
+        showWordFence: true,
+        showConversionRate: true,
+        showUpTime: true
+      }
     };
   },
   computed: {
@@ -102,6 +124,9 @@ export default {
         .then(res => {
           this.$set(website, 'lightHouseData',res);
         });
+    },
+    handleFilterUpdate(data) {
+      Object.assign(this.filters, data);
     }
   }
 };
