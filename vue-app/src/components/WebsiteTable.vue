@@ -76,10 +76,83 @@
         </p>
       </div>
     </div>
+    <form
+      id="newPostForm"
+      @submit.prevent="createNewPost">
+      <label for="title">Title</label>
+      <input
+        id="4451"
+        type="text"
+        name="title">
+
+      <label for="">Google analytics api Key</label>
+      <input
+        id="321"
+        type="text"
+        name="fields[google_analytics_api_key]">
+
+      <label for="">Domain</label>
+      <input
+        id="234"
+        type="text"
+        name="fields[domain]">
+
+      <label for="">Host Name</label>
+      <input
+        id="19"
+        type="text"
+        name="fields[sftp_data][name]">
+
+      <label for="">Host</label>
+      <input
+        id="18"
+        type="text"
+        name="fields[sftp_data][host]">
+
+      <label for="">Protocol</label>
+      <input
+        id="17"
+        type="text"
+        name="fields[sftp_data][protocol]">
+
+      <label for="">Port</label>
+      <input
+        id="16"
+        type="number"
+        name="fields[sftp_data][port]">
+
+      <label for="username">Username</label>
+      <input
+        id="15"
+        type="text"
+        name="fields[sftp_data][username]">
+
+      <label for="">Password</label>
+      <input
+        id="14&quot;&quot;"
+        type="text"
+        name="fields[sftp_data][password]">
+
+      <label for="">Remote Path</label>
+      <input
+        id="13"
+        type="text"
+        name="fields[sftp_data][remotePath]">
+
+      <label for="">Upload on Save</label>
+      <input
+        id="12"
+        type="checkbox"
+        name="fields[sftp_data][uploadonsave]">
+      <button type="submit">
+        Submit
+      </button>
+    </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import { getLightHouseData } from '../utils/api';
 
 import Options from './Options.vue';
@@ -92,6 +165,8 @@ export default {
   },
   data() {
     return {
+      // eslint-disable-next-line
+      wpData: wpData,
       // eslint-disable-next-line
       posts: wpData.posts,
       search: '',
@@ -127,6 +202,23 @@ export default {
     },
     handleFilterUpdate(data) {
       Object.assign(this.filters, data);
+    },
+    createNewPost() {
+      axios.defaults.xsrfCookieName = 'csrftoken';
+      axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+      const form = document.getElementById('newPostForm');
+
+      const formData = new FormData(form);
+
+      axios.post(`${this.wpData.rest_url}/acf/v3/websites/${this.posts[2].ID}`, formData, {
+        auth: {
+          username: 'admin',
+          password: 'admin'
+        }
+      })
+        .then(res => {
+          console.log(res);
+        });
     }
   }
 };
