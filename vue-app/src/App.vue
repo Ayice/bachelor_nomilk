@@ -24,7 +24,12 @@ export default {
 
 <style>
   body {
-    background-color:#eff3ef
+    background-color:#eff3ef;
+    --tw-text-opacity: 1;
+    color: rgba(75, 85, 99, var(--tw-text-opacity));
+  }
+  #masthead {
+    display: none;
   }
 
   @tailwind base;
