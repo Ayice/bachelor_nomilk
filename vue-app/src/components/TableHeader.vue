@@ -18,7 +18,7 @@
     </div>
 
     <div class="w-1/6 flex justify-end self-end">
-      <button class="w-1/2 mr-2 bg-gray-500 text-white font-bold py-1 px-0 rounded-xs hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+      <button class="shadow-lg w-1/2 mr-2 bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
         <div class="w-1/2 m-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
 
       <button
         type="button"
-        class="w-1/2 mr-2 bg-gray-500 text-white font-bold py-1 px-0 rounded-xs hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+        class="shadow-lg w-1/2 mr-2 bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
         <div class="w-1/2 m-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
