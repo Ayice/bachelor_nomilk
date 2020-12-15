@@ -28,6 +28,7 @@ export default {
     --tw-text-opacity: 1;
     color: rgba(75, 85, 99, var(--tw-text-opacity));
   }
+
   #masthead {
     display: none;
   }

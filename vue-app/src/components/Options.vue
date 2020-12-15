@@ -100,7 +100,7 @@
                 type="checkbox"
                 name="performance"
                 @change="handleFilterUpdate('showPerformance')">
-              <span class="ml-3">Performance </span>
+              <span class="ml-3">Performance</span>
             </label>
 
             <label
@@ -152,7 +152,8 @@
                 type="checkbox"
                 name="upTime"
                 @change="handleFilterUpdate('showUpTime')">
-              <span class="ml-3">UpTime</span></label>
+              <span class="ml-3">UpTime</span>
+            </label>
           </div>
         </transition>
       </div>
@@ -182,15 +183,12 @@ export default {
       this.$emit('update:search', $event.target.value);
     },
     handleFilterUpdate(name) {
-      console.log(name);
-
       this.$emit('update:filters', { ...this.filters, [name]: !this.filters[name] });
     }
   },
   onClose() {
     this.showFilters = false;
   }
-
 };
 </script>
 
@@ -220,10 +218,6 @@ export default {
   .filled-input {
     bottom: 80%;
     font-size: 50%;
-  }
-
-  .filled-input ~ svg {
-    width: 10px;
   }
 
   .slide-down-enter-active, .slide-down-leave-active{

@@ -3,8 +3,7 @@
     <options
       class="mb-5"
       :search.sync="search"
-      :filters="filters"
-      @update:filters="handleFilterUpdate">
+      :filters.sync="filters">
     </options>
 
     <div class="shadow w-full bg-white rounded-lg flex flex-wrap">
@@ -77,71 +76,83 @@
       </div>
     </div>
     <form
+      v-if="fsdafasd = false"
       id="newPostForm"
       @submit.prevent="createNewPost">
       <label for="title">Title</label>
       <input
         id="4451"
+        v-model="title"
         type="text"
         name="title">
 
       <label for="">Google analytics api Key</label>
       <input
         id="321"
+        v-model="googleAnalyticsApiKey"
         type="text"
         name="fields[google_analytics_api_key]">
 
       <label for="">Domain</label>
       <input
         id="234"
+        v-model="domain"
         type="text"
         name="fields[domain]">
 
       <label for="">Host Name</label>
       <input
         id="19"
+        v-model="host"
         type="text"
         name="fields[sftp_data][name]">
 
       <label for="">Host</label>
       <input
         id="18"
+        v-model="hostname"
         type="text"
         name="fields[sftp_data][host]">
 
       <label for="">Protocol</label>
       <input
         id="17"
+        v-model="protocol"
         type="text"
         name="fields[sftp_data][protocol]">
 
       <label for="">Port</label>
       <input
         id="16"
+        v-model="port"
         type="number"
         name="fields[sftp_data][port]">
 
       <label for="username">Username</label>
       <input
         id="15"
+        v-model="username"
         type="text"
         name="fields[sftp_data][username]">
 
       <label for="">Password</label>
       <input
-        id="14&quot;&quot;"
+        id="14"
+        v-model="password"
         type="text"
         name="fields[sftp_data][password]">
 
       <label for="">Remote Path</label>
       <input
         id="13"
+        v-model="remotePath"
         type="text"
         name="fields[sftp_data][remotePath]">
 
       <label for="">Upload on Save</label>
       <input
         id="12"
+        v-model="uploadOnSave"
         type="checkbox"
         name="fields[sftp_data][uploadonsave]">
       <button type="submit">
@@ -152,8 +163,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { getLightHouseData } from '../utils/api';
+import { getLightHouseData, postNewWebsite } from '../utils/api';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -176,7 +186,18 @@ export default {
         showWordFence: true,
         showConversionRate: true,
         showUpTime: true
-      }
+      },
+      title: '',
+      googleAnalyticsApiKey: '',
+      domain: '',
+      host: '',
+      hostname: '',
+      protocol: '',
+      port: '',
+      username: '',
+      password: '',
+      remotePath: '',
+      uploadOnSave: true
     };
   },
   computed: {
@@ -197,25 +218,30 @@ export default {
     fetchLHData(website) {
       getLightHouseData(website.custom_fields.domain)
         .then(res => {
-          this.$set(website, 'lightHouseData',res);
+          this.$set(website, 'lightHouseData', res);
         });
     },
-    handleFilterUpdate(data) {
-      Object.assign(this.filters, data);
-    },
     createNewPost() {
-      axios.defaults.xsrfCookieName = 'csrftoken';
-      axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-      const form = document.getElementById('newPostForm');
-
-      const formData = new FormData(form);
-
-      axios.post(`${this.wpData.rest_url}/acf/v3/websites/${this.posts[2].ID}`, formData, {
-        auth: {
-          username: 'admin',
-          password: 'admin'
+      const postData = {
+        title: this.title,
+        status: 'publish',
+        fields: {
+          google_analytics_api_key: this.googleAnalyticsApiKey,
+          domain: this.domain,
+          sftp_data: {
+            name: this.name,
+            host: this.host,
+            protocol: this.protocol,
+            port: this.port,
+            username: this.username,
+            password: this.password,
+            remotePath: this.remotePath,
+            upload_on_save: this.uploadOnSave
+          }
         }
-      })
+      };
+
+      postNewWebsite(postData, this.wpData)
         .then(res => {
           console.log(res);
         });

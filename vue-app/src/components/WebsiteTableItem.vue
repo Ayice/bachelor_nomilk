@@ -122,15 +122,15 @@ export default {
   },
   methods: {
     copySFTPData() {
-      const test = document.getElementById('sftpData');
+      const sftpData = document.getElementById('sftpData');
 
-      test.setAttribute('type', 'text');
+      sftpData.setAttribute('type', 'text');
 
-      test.select();
+      sftpData.select();
 
       document.execCommand('copy');
 
-      test.setAttribute('type', 'hidden');
+      sftpData.setAttribute('type', 'hidden');
 
       window.getSelection().removeAllRanges();
 
@@ -148,6 +148,7 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
@@ -155,6 +156,7 @@ export default {
 .slide-up-enter-active, .slide-up-leave-active{
   transition: transform .3s;
 }
+
 .slide-up-enter, .slide-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
   transform: translateY(25px)
 }
