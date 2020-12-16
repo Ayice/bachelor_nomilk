@@ -185,8 +185,6 @@ export default {
       this.$emit('update:search', $event.target.value);
     },
     handleFilterUpdate(name) {
-      console.log(name);
-
       this.$emit('update:filters', { ...this.filters, [name]: !this.filters[name] });
     },
     closeFilter() {

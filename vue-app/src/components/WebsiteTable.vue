@@ -218,10 +218,7 @@ export default {
         .then(res => {
           this.$set(website, 'lightHouseData', res);
 
-          return;
-        }).then(() => {
           const opportunities = [];
-
           const metrics = [];
 
           for (const key in website.lightHouseData.lighthouseResult.audits) {
@@ -229,12 +226,20 @@ export default {
 
             if (element.details && element.displayValue && element.details.type === 'opportunity') {
               opportunities.push(element);
+            }
 
-              console.log(element);
+            if (element.id === 'first-contentful-paint' ||
+            element.id === 'cumulative-layout-shift' ||
+            element.id === 'interactive' ||
+            element.id === 'speed-index' ||
+            element.id === 'largest-contentful-paint' ||
+            element.id === 'total-blocking-time') {
+              metrics.push(element);
             }
           }
 
           this.$set(website, 'lightHouseOpportunities', opportunities);
+          this.$set(website, 'lightHouseMetrics', metrics);
         });
     },
     handleFilterUpdate(data) {
