@@ -10,6 +10,7 @@
       v-if="filters.showPerformance"
       @click="showMore = !showMore"
       class="px-2 relative">
+
       <div>
       <transition
         name="fade"
@@ -27,9 +28,13 @@
         </span>
       </transition>
       </div>
+
       <div class="relative top-0 px-2 h-auto" v-if="showMore">
         <ul>
-          <li>s</li>
+          <li class="flex justify-between items-start" v-for="opportunity in website.lightHouseOpportunities">
+            <span>- {{ opportunity.title }}</span>
+            <span>- {{ opportunity.displayValue}}</span>
+          </li>
         </ul>
       </div>
     </td>
@@ -114,7 +119,7 @@ export default {
     prettyScore(val) {
       if (!val) return;
 
-      return val * 100;
+      return Math.round(val * 100);
     }
   },
   props: {
@@ -135,15 +140,15 @@ export default {
   },
   methods: {
     copySFTPData() {
-      const sftpData = document.getElementById('sftpData');
+      const test = document.getElementById('sftpData');
 
-      sftpData.setAttribute('type', 'text');
+      test.setAttribute('type', 'text');
 
-      sftpData.select();
+      test.select();
 
       document.execCommand('copy');
 
-      sftpData.setAttribute('type', 'hidden');
+      test.setAttribute('type', 'hidden');
 
       window.getSelection().removeAllRanges();
 
