@@ -9,7 +9,7 @@
     <td
       v-if="filters.showPerformance"
       @click="showMore = !showMore"
-      class="px-2 relative">
+      class="px-2 relative transition duration-500 ease-in-out overflow-hidden">
 
       <transition
         name="fade"
@@ -26,20 +26,16 @@
           Loading...
         </span>
       </transition>
+
       <transition
         name="slide-down"
         mode="out-in">
-      <div class="relative top-0 px-2 h-auto" v-if="showMore">
-        
-      
-          <ul>
+          <ul class="relative top-0 px-2 h-auto" v-if="showMore">
             <li class="flex justify-between items-start" v-for="opportunity in website.lightHouseOpportunities" :key="opportunity.ID">
               <span>- {{ opportunity.title }}</span>
               <span>- {{ opportunity.displayValue}}</span>
             </li>
           </ul>
-       
-      </div>
        </transition>
      
     </td>
