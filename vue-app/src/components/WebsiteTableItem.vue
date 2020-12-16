@@ -11,7 +11,6 @@
       @click="showMore = !showMore"
       class="px-2 relative">
 
-      <div>
       <transition
         name="fade"
         mode="out-in">
@@ -27,16 +26,22 @@
           Loading...
         </span>
       </transition>
-      </div>
-
+      <transition
+        name="slide-down"
+        mode="out-in">
       <div class="relative top-0 px-2 h-auto" v-if="showMore">
-        <ul>
-          <li class="flex justify-between items-start" v-for="opportunity in website.lightHouseOpportunities">
-            <span>- {{ opportunity.title }}</span>
-            <span>- {{ opportunity.displayValue}}</span>
-          </li>
-        </ul>
+        
+      
+          <ul>
+            <li class="flex justify-between items-start" v-for="opportunity in website.lightHouseOpportunities" :key="opportunity.ID">
+              <span>- {{ opportunity.title }}</span>
+              <span>- {{ opportunity.displayValue}}</span>
+            </li>
+          </ul>
+       
       </div>
+       </transition>
+     
     </td>
 
     <td
@@ -175,6 +180,13 @@ export default {
 }
 .slide-up-enter, .slide-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
   transform: translateY(25px)
+}
+
+.slide-down-enter-active, .slide-down-leave-active {
+  transition: opacity .5s;
+}
+.slide-down-enter, .slide-down-leave-to {
+  opacity: 0; 
 }
 
 .clipboard {
