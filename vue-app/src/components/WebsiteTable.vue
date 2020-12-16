@@ -76,6 +76,92 @@
         </p>
       </div>
     </div>
+<<<<<<< Updated upstream
+=======
+    <form
+      id="newPostForm"
+      @submit.prevent="createNewPost">
+      <label for="title">Title</label>
+      <input
+        id="4451"
+        v-model="title"
+        type="text"
+        name="title">
+
+      <label for="">Google analytics api Key</label>
+      <input
+        id="321"
+        v-model="googleAnalyticsApiKey"
+        type="text"
+        name="fields[google_analytics_api_key]">
+
+      <label for="">Domain</label>
+      <input
+        id="234"
+        v-model="domain"
+        type="text"
+        name="fields[domain]">
+
+      <label for="">Host Name</label>
+      <input
+        id="19"
+        v-model="host"
+        type="text"
+        name="fields[sftp_data][name]">
+
+      <label for="">Host</label>
+      <input
+        id="18"
+        v-model="hostname"
+        type="text"
+        name="fields[sftp_data][host]">
+
+      <label for="">Protocol</label>
+      <input
+        id="17"
+        v-model="protocol"
+        type="text"
+        name="fields[sftp_data][protocol]">
+
+      <label for="">Port</label>
+      <input
+        id="16"
+        v-model="port"
+        type="number"
+        name="fields[sftp_data][port]">
+
+      <label for="username">Username</label>
+      <input
+        id="15"
+        v-model="username"
+        type="text"
+        name="fields[sftp_data][username]">
+
+      <label for="">Password</label>
+      <input
+        id="14"
+        v-model="password"
+        type="text"
+        name="fields[sftp_data][password]">
+
+      <label for="">Remote Path</label>
+      <input
+        id="13"
+        v-model="remotePath"
+        type="text"
+        name="fields[sftp_data][remotePath]">
+
+      <label for="">Upload on Save</label>
+      <input
+        id="12"
+        v-model="uploadOnSave"
+        type="checkbox"
+        name="fields[sftp_data][uploadonsave]">
+      <button type="submit">
+        Submit
+      </button>
+    </form>
+>>>>>>> Stashed changes
   </div>
 </template>
 
@@ -122,7 +208,29 @@ export default {
     fetchLHData(website) {
       getLightHouseData(website.custom_fields.domain)
         .then(res => {
+<<<<<<< Updated upstream
           this.$set(website, 'lightHouseData',res);
+=======
+          this.$set(website, 'lightHouseData', res);
+
+          return;
+        }).then(() => {
+          const opportunities = [];
+          const metrics = [];
+
+          for (const key in website.lightHouseData.lighthouseResult.audits) {
+            const element = website.lightHouseData.lighthouseResult.audits[key];
+
+            console.log(element);
+
+            if (element.details && element.displayValue && element.details.type === 'opportunity') {
+              opportunities.push(element);
+
+              console.log(element);
+            }
+          }
+          this.$set(website, 'lightHouseOpportunities', opportunities);
+>>>>>>> Stashed changes
         });
     },
     handleFilterUpdate(data) {

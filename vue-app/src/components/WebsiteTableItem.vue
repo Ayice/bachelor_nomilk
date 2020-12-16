@@ -1,5 +1,7 @@
 <template>
-  <tr class="cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium">
+  <tr
+    class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium"
+    @click="showMore = !showMore">
     <td class="px-2">
       {{ website.custom_fields.domain }}
     </td>
@@ -58,28 +60,30 @@
         type="hidden"
         name="sftp-Data"
         :value="JSON.stringify(website.custom_fields.sftp_data)">
+      <div class="w-full">
+        <svg
+          class="clipboard"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          width="50px"
+          viewBox="0 -5 35 35"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
 
-      <svg
-        class="clipboard w-10"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="4 -5 35 35"
-        stroke="currentColor">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1"
-          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-      </svg>
-
-      <transition
-        name="slide-up"
-        mode="in-out">
-        <span
-          v-if="copied"
-          class="left-0 z-10 shadow absolute font-bold text-green-500 bg-white px-3 py-2">Copied!
-        </span>
-      </transition>
+        <transition
+          name="slide-up"
+          mode="in-out">
+          <span
+            v-if="copied"
+            class="left-0 z-10 shadow absolute font-bold text-green-500 bg-white px-3 py-2">Copied!
+          </span>
+        </transition>
+      </div>
     </td>
 
     <td
@@ -90,7 +94,7 @@
 
     <td
       v-if="filters.showUpTime"
-      class="px-2">
+      class="relative px-2">
       {{ website.ID }}
     </td>
   </tr>
@@ -117,6 +121,7 @@ export default {
   },
   data() {
     return {
+      showMore: false,
       copied: false
     };
   },
@@ -148,7 +153,12 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
+<<<<<<< Updated upstream
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+=======
+
+.fade-enter, .fade-leave-to {
+>>>>>>> Stashed changes
   opacity: 0;
 }
 

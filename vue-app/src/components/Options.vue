@@ -61,12 +61,14 @@
         </button>
       </div>
 
-      <div class="w-1/3 relative">
+      <div
+        v-click-outside="closeFilter"
+        class="w-1/3 relative">
         <button
           type="button"
           class="w-full h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 active:outline-none"
           @click="showFilters = !showFilters">
-          <div class="w-1/2 m-auto">
+          <div class="w-1/2 m-auto filter-menu">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="-2.5 -5 30 30"
@@ -84,7 +86,7 @@
 
         <transition name="slide-down">
           <div
-            v-show="showFilters"
+            v-if="showFilters"
             class="flex flex-column absolute left-0 bg-white p-3 whitespace-nowrap">
             <p class="font-bold">
               Filter view
@@ -161,6 +163,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     search: {
@@ -185,10 +188,10 @@ export default {
       console.log(name);
 
       this.$emit('update:filters', { ...this.filters, [name]: !this.filters[name] });
+    },
+    closeFilter() {
+      this.showFilters = false;
     }
-  },
-  onClose() {
-    this.showFilters = false;
   }
 
 };
