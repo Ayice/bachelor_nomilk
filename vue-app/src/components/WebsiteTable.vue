@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { getLightHouseData } from '../utils/api';
+import { getLightHouseData, postNewWebsite } from '../utils/api';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -184,7 +184,18 @@ export default {
         showWordFence: true,
         showConversionRate: true,
         showUpTime: true
-      }
+      },
+      title: '',
+      googleAnalyticsApiKey: '',
+      domain: '',
+      host: '',
+      hostname: '',
+      protocol: '',
+      port: '',
+      username: '',
+      password: '',
+      remotePath: '',
+      uploadOnSave: true
     };
   },
   computed: {
@@ -210,12 +221,11 @@ export default {
           return;
         }).then(() => {
           const opportunities = [];
+
           const metrics = [];
 
           for (const key in website.lightHouseData.lighthouseResult.audits) {
             const element = website.lightHouseData.lighthouseResult.audits[key];
-
-            console.log(element);
 
             if (element.details && element.displayValue && element.details.type === 'opportunity') {
               opportunities.push(element);
@@ -223,11 +233,38 @@ export default {
               console.log(element);
             }
           }
+
           this.$set(website, 'lightHouseOpportunities', opportunities);
         });
     },
     handleFilterUpdate(data) {
       Object.assign(this.filters, data);
+    },
+    createNewPost() {
+      const postData = {
+        title: this.title,
+        status: 'publish',
+        fields: {
+          google_analytics_api_key: this.googleAnalyticsApiKey,
+          domain: this.domain,
+          sftp_data: {
+            name: this.name,
+            host: this.host,
+            protocol: this.protocol,
+            port: this.port,
+            username: this.username,
+            password: this.password,
+            remotePath: this.remotePath,
+            upload_on_save: this.uploadOnSave
+          }
+        }
+      };
+      postNewWebsite(postData, this.wpData)
+        .then(res => {
+          console.log(res);
+
+          this.posts.splice(0, 0, res);
+        });
     }
   }
 };
