@@ -135,15 +135,15 @@ export default {
   },
   methods: {
     copySFTPData() {
-      const test = document.getElementById('sftpData');
+      const sftpData = document.getElementById('sftpData');
 
-      test.setAttribute('type', 'text');
+      sftpData.setAttribute('type', 'text');
 
-      test.select();
+      sftpData.select();
 
       document.execCommand('copy');
 
-      test.setAttribute('type', 'hidden');
+      sftpData.setAttribute('type', 'hidden');
 
       window.getSelection().removeAllRanges();
 
