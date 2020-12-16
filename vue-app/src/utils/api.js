@@ -4,10 +4,10 @@ export async function getLightHouseData(website) {
   const params = new URLSearchParams();
 
   params.append('url', website);
-  params.append('key', 'AIzaSyCA3Aj7UEggBO9CbuXBMg3p8VmdW-xiBfg');
+  params.append('strategy', 'MOBILE');
   params.append('category', 'seo');
   params.append('category', 'performance');
-  params.append('strategy', 'mobile');
+  params.append('key', 'AIzaSyCA3Aj7UEggBO9CbuXBMg3p8VmdW-xiBfg');
 
   const request = {
     params: params
