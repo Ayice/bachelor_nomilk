@@ -1,14 +1,16 @@
 <template>
   <tr
     class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium"
-    @click="showMore = !showMore">
+    >
     <td class="px-2">
       {{ website.custom_fields.domain }}
     </td>
 
     <td
       v-if="filters.showPerformance"
-      class="px-2">
+      @click="showMore = !showMore"
+      class="px-2 relative">
+      <div>
       <transition
         name="fade"
         mode="out-in">
@@ -24,6 +26,12 @@
           Loading...
         </span>
       </transition>
+      </div>
+      <div class="relative top-0 px-2 h-auto" v-if="showMore">
+        <ul>
+          <li>s</li>
+        </ul>
+      </div>
     </td>
 
     <td
