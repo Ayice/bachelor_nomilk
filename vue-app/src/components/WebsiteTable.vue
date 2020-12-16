@@ -76,8 +76,6 @@
         </p>
       </div>
     </div>
-<<<<<<< Updated upstream
-=======
     <form
       id="newPostForm"
       @submit.prevent="createNewPost">
@@ -161,7 +159,6 @@
         Submit
       </button>
     </form>
->>>>>>> Stashed changes
   </div>
 </template>
 
@@ -208,9 +205,6 @@ export default {
     fetchLHData(website) {
       getLightHouseData(website.custom_fields.domain)
         .then(res => {
-<<<<<<< Updated upstream
-          this.$set(website, 'lightHouseData',res);
-=======
           this.$set(website, 'lightHouseData', res);
 
           return;
@@ -230,7 +224,6 @@ export default {
             }
           }
           this.$set(website, 'lightHouseOpportunities', opportunities);
->>>>>>> Stashed changes
         });
     },
     handleFilterUpdate(data) {
