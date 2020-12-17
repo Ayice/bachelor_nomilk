@@ -38,7 +38,7 @@
 
     <div class="w-1/6 flex justify-end self-end">
       <div class="w-1/3 mr-3 relative">
-        <button class="w-full h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+        <button class="w-full h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 active:outline-none active:border-0 focus:border-0 focus:outline-none focus:bg-gray-300">
           <div class="w-1/2 m-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -185,8 +185,6 @@ export default {
       this.$emit('update:search', $event.target.value);
     },
     handleFilterUpdate(name) {
-      console.log(name);
-
       this.$emit('update:filters', { ...this.filters, [name]: !this.filters[name] });
     },
     closeFilter() {
@@ -223,10 +221,6 @@ export default {
   .filled-input {
     bottom: 80%;
     font-size: 50%;
-  }
-
-  .filled-input ~ svg {
-    width: 10px;
   }
 
   .slide-down-enter-active, .slide-down-leave-active{

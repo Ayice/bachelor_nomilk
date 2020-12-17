@@ -76,94 +76,11 @@
         </p>
       </div>
     </div>
-    <form
-      id="newPostForm"
-      @submit.prevent="createNewPost">
-      <label for="title">Title</label>
-      <input
-        id="4451"
-        v-model="title"
-        type="text"
-        name="title">
-
-      <label for="">Google analytics api Key</label>
-      <input
-        id="321"
-        v-model="googleAnalyticsApiKey"
-        type="text"
-        name="fields[google_analytics_api_key]">
-
-      <label for="">Domain</label>
-      <input
-        id="234"
-        v-model="domain"
-        type="text"
-        name="fields[domain]">
-
-      <label for="">Host Name</label>
-      <input
-        id="19"
-        v-model="host"
-        type="text"
-        name="fields[sftp_data][name]">
-
-      <label for="">Host</label>
-      <input
-        id="18"
-        v-model="hostname"
-        type="text"
-        name="fields[sftp_data][host]">
-
-      <label for="">Protocol</label>
-      <input
-        id="17"
-        v-model="protocol"
-        type="text"
-        name="fields[sftp_data][protocol]">
-
-      <label for="">Port</label>
-      <input
-        id="16"
-        v-model="port"
-        type="number"
-        name="fields[sftp_data][port]">
-
-      <label for="username">Username</label>
-      <input
-        id="15"
-        v-model="username"
-        type="text"
-        name="fields[sftp_data][username]">
-
-      <label for="">Password</label>
-      <input
-        id="14"
-        v-model="password"
-        type="text"
-        name="fields[sftp_data][password]">
-
-      <label for="">Remote Path</label>
-      <input
-        id="13"
-        v-model="remotePath"
-        type="text"
-        name="fields[sftp_data][remotePath]">
-
-      <label for="">Upload on Save</label>
-      <input
-        id="12"
-        v-model="uploadOnSave"
-        type="checkbox"
-        name="fields[sftp_data][uploadonsave]">
-      <button type="submit">
-        Submit
-      </button>
-    </form>
   </div>
 </template>
 
 <script>
-import { getLightHouseData, postNewWebsite } from '../utils/api';
+import { getLightHouseData } from '../utils/api';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -184,18 +101,8 @@ export default {
         showWordFence: true,
         showConversionRate: true,
         showUpTime: true
-      },
-      title: '',
-      googleAnalyticsApiKey: '',
-      domain: '',
-      host: '',
-      hostname: '',
-      protocol: '',
-      port: '',
-      username: '',
-      password: '',
-      remotePath: '',
-      uploadOnSave: true
+      }
+
     };
   },
   computed: {
@@ -218,10 +125,7 @@ export default {
         .then(res => {
           this.$set(website, 'lightHouseData', res);
 
-          return;
-        }).then(() => {
           const opportunities = [];
-
           const metrics = [];
 
           for (const key in website.lightHouseData.lighthouseResult.audits) {
@@ -229,42 +133,24 @@ export default {
 
             if (element.details && element.displayValue && element.details.type === 'opportunity') {
               opportunities.push(element);
+            }
 
-              console.log(element);
+            if (element.id === 'first-contentful-paint' ||
+            element.id === 'cumulative-layout-shift' ||
+            element.id === 'interactive' ||
+            element.id === 'speed-index' ||
+            element.id === 'largest-contentful-paint' ||
+            element.id === 'total-blocking-time') {
+              metrics.push(element);
             }
           }
 
           this.$set(website, 'lightHouseOpportunities', opportunities);
+          this.$set(website, 'lightHouseMetrics', metrics);
         });
     },
     handleFilterUpdate(data) {
       Object.assign(this.filters, data);
-    },
-    createNewPost() {
-      const postData = {
-        title: this.title,
-        status: 'publish',
-        fields: {
-          google_analytics_api_key: this.googleAnalyticsApiKey,
-          domain: this.domain,
-          sftp_data: {
-            name: this.name,
-            host: this.host,
-            protocol: this.protocol,
-            port: this.port,
-            username: this.username,
-            password: this.password,
-            remotePath: this.remotePath,
-            upload_on_save: this.uploadOnSave
-          }
-        }
-      };
-      postNewWebsite(postData, this.wpData)
-        .then(res => {
-          console.log(res);
-
-          this.posts.splice(0, 0, res);
-        });
     }
   }
 };

@@ -1,16 +1,15 @@
 <template>
   <tr
+    v-click-outside="closeExtraData"
     class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium"
-    >
+    @click="showMore = true">
     <td class="px-2">
       {{ website.custom_fields.domain }}
     </td>
 
     <td
       v-if="filters.showPerformance"
-      @click="showMore = !showMore"
-      class="px-2 relative transition duration-500 ease-in-out overflow-hidden">
-
+      class="px-2 relative">
       <transition
         name="fade"
         mode="out-in">
@@ -28,6 +27,63 @@
       </transition>
 
       <transition
+        name="slide-up"
+        mode="in-out">
+        <div
+          v-if="website.lightHouseData && showMore"
+          class="metrics-div rounded-md shadow-lg p-8 bg-white absolute left-full z-10">
+          <p class="mb-5 text-xl">
+            {{ website.custom_fields.domain }}
+          </p>
+
+          <p class="text-lg">
+            Metrics
+          </p>
+
+          <div
+            v-if="website.lightHouseData.loadingExperience"
+            class="mb-3 flex flex-wrap">
+            <div
+              v-for="(metric, key) in website.lightHouseData.loadingExperience.metrics"
+              :key="key"
+              class="w-1/2 mb-3 ">
+              {{ key | prettyMetricTitle }} - {{ metric.percentile | prettyMetricScore }}s
+            </div>
+          </div>
+
+          <div
+            v-else-if="website.lightHouseData && !website.lightHouseData.loadingExperience"
+            class="mb-3">
+            <p>
+              The report for userexperience in Chrome doesn't have enough data to show.
+            </p>
+          </div>
+
+          <p class="text-lg">
+            Other Metrics
+          </p>
+
+          <div>
+            <div class="flex flex-wrap">
+              <div
+                v-for="metric in website.lightHouseMetrics"
+                :key="metric.id"
+                class="w-1/2 mb-3">
+                <p>{{ metric.title }}</p>
+                <p>{{ metric.displayValue }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-else-if="showMore && !website.lightHouseData"
+          class="metrics-div rounded-md shadow-lg p-8 bg-white absolute left-full z-10">
+          <p class="text-lg">
+            Still Loading this data
+          </p>
+        </div>
+      </transition>
         name="slide-down"
         mode="out-in">
           <ul class="relative top-0 px-2 h-auto" v-if="showMore">
@@ -37,7 +93,6 @@
             </li>
           </ul>
        </transition>
-     
     </td>
 
     <td
@@ -68,7 +123,7 @@
 
     <td
       class="px-2 relative"
-      @click="copySFTPData">
+      @click.stop="copySFTPData">
       <input
         id="sftpData"
         type="hidden"
@@ -94,7 +149,8 @@
           mode="in-out">
           <span
             v-if="copied"
-            class="left-0 z-10 shadow absolute font-bold text-green-500 bg-white px-3 py-2">Copied!
+            class="left-0 z-10 shadow absolute font-bold text-green-500 bg-white px-3 py-2">
+            Copied!
           </span>
         </transition>
       </div>
@@ -102,7 +158,7 @@
 
     <td
       v-if="filters.showConversionRate"
-      class="px-2">
+      class="px-2 relative">
       {{ website.ID }}
     </td>
 
@@ -111,6 +167,9 @@
       class="relative px-2">
       {{ website.ID }}
     </td>
+
+    <div class="accordion absolute w-1/2 ">
+    </div>
   </tr>
 </template>
 
@@ -121,6 +180,32 @@ export default {
       if (!val) return;
 
       return Math.round(val * 100);
+    },
+    prettyMetricScore(val) {
+      if (!val) return;
+
+      if (val.toString().length === 4) {
+        const stringVal = val.toString();
+
+        const valRemoveLastChar = stringVal.slice(0, -1);
+
+        return parseInt(valRemoveLastChar) / 100;
+      }
+
+      return val / 100;
+    },
+    prettyMetricTitle(val) {
+      if (!val) return;
+
+      const valArray = val.split('_');
+
+      const removeUnderScore = valArray.join(' ');
+
+      const lowerCaseVal = removeUnderScore.toLowerCase();
+
+      const firstCharacter = lowerCaseVal.charAt(0);
+
+      return firstCharacter.toUpperCase() + lowerCaseVal.slice(1);
     }
   },
   props: {
@@ -158,6 +243,9 @@ export default {
       setTimeout(() => {
         this.copied = false;
       }, 1000);
+    },
+    closeExtraData() {
+      this.showMore = false;
     }
   }
 };
@@ -167,15 +255,19 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 
 .slide-up-enter-active, .slide-up-leave-active{
-  transition: transform .3s;
+  transition: all .5s cubic-bezier(.57,-0.52,.32,1.41);
 }
-.slide-up-enter, .slide-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  transform: translateY(25px)
+
+.slide-up-enter,
+.slide-up-leave-to {
+  transform: translateY(100px);
+  opacity: 0;
 }
 
 .slide-down-enter-active, .slide-down-leave-active {
@@ -187,5 +279,10 @@ export default {
 
 .clipboard {
   fill: transparent;
+}
+
+.metrics-div{
+  width: 300%;
+  top: 0;
 }
 </style>

@@ -13,7 +13,6 @@ export async function getLightHouseData(website) {
     params: params
   };
 
-  // TODO: Fetch as mobile, not desktop
   const response = await axios.get('https://www.googleapis.com/pagespeedonline/v5/runPagespeed/', request);
 
   return response.data;
