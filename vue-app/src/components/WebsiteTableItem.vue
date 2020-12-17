@@ -84,6 +84,15 @@
           </p>
         </div>
       </transition>
+        name="slide-down"
+        mode="out-in">
+          <ul class="relative top-0 px-2 h-auto" v-if="showMore">
+            <li class="flex justify-between items-start" v-for="opportunity in website.lightHouseOpportunities" :key="opportunity.ID">
+              <span>- {{ opportunity.title }}</span>
+              <span>- {{ opportunity.displayValue}}</span>
+            </li>
+          </ul>
+       </transition>
     </td>
 
     <td
@@ -217,15 +226,15 @@ export default {
   },
   methods: {
     copySFTPData() {
-      const sftpData = document.getElementById('sftpData');
+      const test = document.getElementById('sftpData');
 
-      sftpData.setAttribute('type', 'text');
+      test.setAttribute('type', 'text');
 
-      sftpData.select();
+      test.select();
 
       document.execCommand('copy');
 
-      sftpData.setAttribute('type', 'hidden');
+      test.setAttribute('type', 'hidden');
 
       window.getSelection().removeAllRanges();
 
@@ -259,6 +268,13 @@ export default {
 .slide-up-leave-to {
   transform: translateY(100px);
   opacity: 0;
+}
+
+.slide-down-enter-active, .slide-down-leave-active {
+  transition: opacity .5s;
+}
+.slide-down-enter, .slide-down-leave-to {
+  opacity: 0; 
 }
 
 .clipboard {
