@@ -40,13 +40,23 @@
             Metrics
           </p>
 
-          <div class="flex flex-wrap">
+          <div
+            v-if="website.lightHouseData.loadingExperience"
+            class="mb-3 flex flex-wrap">
             <div
               v-for="(metric, key) in website.lightHouseData.loadingExperience.metrics"
               :key="key"
               class="w-1/2 mb-3 ">
               {{ key | prettyMetricTitle }} - {{ metric.percentile | prettyMetricScore }}s
             </div>
+          </div>
+
+          <div
+            v-else-if="website.lightHouseData && !website.lightHouseData.loadingExperience"
+            class="mb-3">
+            <p>
+              The report for userexperience in Chrome doesn't have enough data to show.
+            </p>
           </div>
 
           <p class="text-lg">
@@ -60,7 +70,7 @@
                 :key="metric.id"
                 class="w-1/2 mb-3">
                 <p>{{ metric.title }}</p>
-                <span>{{ metric.displayValue }}</span>
+                <p>{{ metric.displayValue }}</p>
               </div>
             </div>
           </div>
@@ -237,21 +247,18 @@ export default {
   transition: opacity .5s;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 
 .slide-up-enter-active, .slide-up-leave-active{
   transition: all .5s cubic-bezier(.57,-0.52,.32,1.41);
 }
-.slide-up-enter /* .fade-leave-active below version 2.1.8 */ {
+
+.slide-up-enter,
+.slide-up-leave-to {
   transform: translateY(100px);
   opacity: 0;
-}
-
-.slide-up-leave-to {
- transform: translateY(100px);
- opacity: 0;
 }
 
 .clipboard {
@@ -261,6 +268,5 @@ export default {
 .metrics-div{
   width: 300%;
   top: 0;
-
 }
 </style>
