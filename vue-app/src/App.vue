@@ -1,6 +1,6 @@
 <template>
   <div class="flex w-full">
-    <div class="w-1/6">
+    <div class="w-3/12">
       <side-bar></side-bar>
     </div>
 
@@ -28,6 +28,7 @@ export default {
     --tw-text-opacity: 1;
     color: rgba(75, 85, 99, var(--tw-text-opacity));
   }
+
   #masthead {
     display: none;
   }

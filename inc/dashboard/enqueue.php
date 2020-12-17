@@ -25,6 +25,7 @@ function vue_dashboard_scripts()
     'vue_dashboard',
     'wpData',
     array(
+      'nonce' => wp_create_nonce('wp_rest'),
       'template_directory_uri' => get_stylesheet_directory_uri(),
       'rest_url' => untrailingslashit(esc_url_raw(rest_url())),
       'posts' => $websites,

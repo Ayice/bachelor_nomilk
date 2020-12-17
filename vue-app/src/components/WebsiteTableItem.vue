@@ -104,7 +104,7 @@
 
     <td
       class="px-2 relative"
-      @click="copySFTPData">
+      @click.stop="copySFTPData">
       <input
         id="sftpData"
         type="hidden"
@@ -160,7 +160,7 @@ export default {
     prettyScore(val) {
       if (!val) return;
 
-      return val * 100;
+      return Math.round(val * 100);
     },
     prettyMetricScore(val) {
       if (!val) return;
