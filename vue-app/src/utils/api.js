@@ -1,5 +1,21 @@
 import axios from 'axios';
 
+export async function getWebsites(url) {
+  const response = await axios.get(`${url}/wp/v2/websites?per_page=100`);
+
+  return response.data;
+}
+
+export async function deleteWebsite(wpData, id) {
+  const response = await axios.delete(`${wpData.rest_url}/wp/v2/websites/${id}`, {
+    headers: {
+      'X-WP-Nonce': wpData.nonce
+    }
+  });
+
+  return response.data;
+}
+
 export async function getLightHouseData(website) {
   const params = new URLSearchParams();
 
@@ -19,7 +35,7 @@ export async function getLightHouseData(website) {
 }
 
 export async function postNewWebsite(data, wpData) {
-  const response = await axios.post(`${wpData.rest_url}/wp/v2/websites/`, data, {
+  const response = await axios.post(`${wpData.rest_url}/wp/v2/websites`, data, {
     headers: {
       'X-WP-Nonce': wpData.nonce
     }

@@ -33,6 +33,7 @@
       <div class="mt-10">
         <form
           id="newPostForm"
+          ref="newWebsiteForm"
           @submit.prevent="createNewPost">
           <p class="text-lg font-medium">
             Create New Website
@@ -77,11 +78,11 @@
               for="">Domain</label>
           </div>
 
-          <p class="mt-3 text-sm font-medium">
+          <p class="mt-10 text-sm font-medium">
             SFTP Data:
           </p>
 
-          <div class="relative mt-3">
+          <div class="relative mt-2">
             <input
               id="18"
               v-model="serverName"
@@ -260,13 +261,19 @@
 import { postNewWebsite } from '../utils/api';
 
 export default {
+  props: {
+    websites: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       // eslint-disable-next-line
       wpData: wpData,
       title: '',
       googleAnalyticsApiKey: '',
-      domain: '',
+      domain: 'https://',
       host: '',
       serverName: '',
       protocol: '',
@@ -300,9 +307,29 @@ export default {
 
       postNewWebsite(postData, this.wpData)
         .then(res => {
-          console.log(res);
+          this.title = '';
 
-          this.posts.splice(0, 0, res);
+          this.googleAnalyticsApiKey = '';
+
+          this.domain = 'https://';
+
+          this.host = '';
+
+          this.serverName = '';
+
+          this.protocol = '';
+
+          this.port = 21;
+
+          this.username = '';
+
+          this.password = '';
+
+          this.remotePath = '';
+
+          this.uploadOnSave = true;
+
+          this.$emit('update:websites', res);
         });
     }
   }
@@ -311,16 +338,16 @@ export default {
 
 <style scoped>
     button {
-        outline: none;
-        display: flex;
+      outline: none;
+      display: flex;
     }
 
     button:active, button:focus {
-        outline: none;
+      outline: none;
     }
 
     .sidebar-wrapper {
-        user-select: none;
+      user-select: none;
     }
 
   input[type="text"],

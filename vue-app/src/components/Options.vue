@@ -87,7 +87,7 @@
         <transition name="slide-down">
           <div
             v-if="showFilters"
-            class="flex flex-column absolute left-0 bg-white p-3 whitespace-nowrap">
+            class="z-10 flex flex-column absolute left-0 bg-white p-3 whitespace-nowrap">
             <p class="font-bold">
               Filter view
             </p>

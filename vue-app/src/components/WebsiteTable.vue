@@ -52,7 +52,7 @@
         </tr>
 
         <website-table-item
-          v-for="(website, i) in websites"
+          v-for="(website, i) in computedWebsites"
           :key="website.ID"
           :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
           :filters="filters"
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getLightHouseData } from '../utils/api';
+import { runReport } from '../utils/api';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -90,10 +90,14 @@ export default {
     Options,
     WebsiteTableItem
   },
+  props: {
+    websites: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      // eslint-disable-next-line
-      posts: wpData.posts,
       search: '',
       filters: {
         showPerformance: true,
@@ -102,53 +106,24 @@ export default {
         showConversionRate: true,
         showUpTime: true
       }
-
     };
   },
   computed: {
-    websites() {
+    computedWebsites() {
       if (this.search) {
-        return this.posts.filter(post => post.custom_fields.domain.includes(this.search));
+        return this.websites.filter(post => {
+          if (post.acf) {
+            return post.acf.domain.includes(this.search);
+          }
+
+          post.acf.domain.include(this.search);
+        });
       } else {
-        return this.posts;
+        return this.websites;
       }
     }
   },
-  mounted() {
-    this.posts.forEach(website => {
-      this.fetchLHData(website);
-    });
-  },
   methods: {
-    fetchLHData(website) {
-      getLightHouseData(website.custom_fields.domain)
-        .then(res => {
-          this.$set(website, 'lightHouseData', res);
-
-          const opportunities = [];
-          const metrics = [];
-
-          for (const key in website.lightHouseData.lighthouseResult.audits) {
-            const element = website.lightHouseData.lighthouseResult.audits[key];
-
-            if (element.details && element.displayValue && element.details.type === 'opportunity') {
-              opportunities.push(element);
-            }
-
-            if (element.id === 'first-contentful-paint' ||
-            element.id === 'cumulative-layout-shift' ||
-            element.id === 'interactive' ||
-            element.id === 'speed-index' ||
-            element.id === 'largest-contentful-paint' ||
-            element.id === 'total-blocking-time') {
-              metrics.push(element);
-            }
-          }
-
-          this.$set(website, 'lightHouseOpportunities', opportunities);
-          this.$set(website, 'lightHouseMetrics', metrics);
-        });
-    },
     handleFilterUpdate(data) {
       Object.assign(this.filters, data);
     }
