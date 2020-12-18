@@ -1,5 +1,10 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import App from './App.vue';
+
+import 'es6-promise/auto';
+
+Vue.use(Vuex);
 
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
@@ -17,5 +22,6 @@ Vue.directive('click-outside', {
 
 new Vue({
   el: '#wp-vue-app',
+  store,
   render: h => h(App)
 });
