@@ -31,72 +31,100 @@
         mode="in-out">
         <div
           v-if="lightHouseData.id && showMore"
-          class="metrics-div rounded-md shadow-lg p-8 bg-white absolute left-full z-10">
+          class="metrics-div top-0 rounded-md shadow-lg p-8 bg-white absolute left-full z-10">
           <p class="mb-5 text-xl">
             {{ website.acf.domain }}
           </p>
 
-          <p class="text-lg">
-            Metrics
-          </p>
-
-          <div
-            v-if="lightHouseData.loadingExperience"
-            class="mb-3 flex flex-wrap">
+          <div class="relative w-full flex flex-wrap mb-2">
             <div
-              v-for="(metric, key) in lightHouseData.loadingExperience.metrics"
-              :key="key"
-              class="w-1/2 mb-3 ">
-              {{ key | prettyMetricTitle }} - {{ metric.percentile | prettyMetricScore }}s
+              v-for="tabName in tabs"
+              :key="tabName"
+              :style="{ width: 100 / tabs.length + '%'}"
+              :class="[{ 'text-blue-500' : tab === tabName }, 'tab', 'text-center', 'p-2', 'font-bold', 'text-gray-700', 'hover:bg-gray-200', 'transition']"
+              @click="tab = tabName">
+              {{ tabName.toUpperCase() }}
+            </div>
+
+            <div class="w-full relative h-1 z-10 bottom-0">
+              <span
+                :style="{ width: 100 / tabs.length + '%', left: sliderLeft }"
+                class="slider block absolute h-0.5 bg-blue-500 rounded-sm">
+              </span>
             </div>
           </div>
 
-          <div
-            v-else-if="lightHouseData.id && !lightHouseData.loadingExperience"
-            class="mb-3">
-            <p>
-              The report for userexperience in Chrome doesn't have enough data to show.
-            </p>
-          </div>
+          <transition
+            name="slide-in"
+            mode="out-in">
+            <div
+              v-if="tab === 'metrics'"
+              key="metrics">
+              <p class="text-lg">
+                Metrics
+              </p>
 
-          <p class="text-lg">
-            Other Metrics
-          </p>
-
-          <div>
-            <div class="flex flex-wrap">
               <div
-                v-for="metric in metrics"
-                :key="metric.id"
-                class="w-1/2 mb-3">
-                <p>{{ metric.title }}</p>
-                <p>{{ metric.displayValue }}</p>
+                v-if="lightHouseData.loadingExperience"
+                class="mb-3 flex flex-wrap">
+                <div
+                  v-for="(metric, key) in lightHouseData.loadingExperience.metrics"
+                  :key="key"
+                  class="w-1/2 mb-3 ">
+                  {{ key | prettyMetricTitle }} - {{ metric.percentile | prettyMetricScore }}s
+                </div>
+              </div>
+
+              <div
+                v-else-if="lightHouseData.id && !lightHouseData.loadingExperience"
+                class="mb-3">
+                <p>
+                  The report for userexperience in Chrome doesn't have enough data to show.
+                </p>
+              </div>
+
+              <p class="text-lg">
+                Other Metrics
+              </p>
+
+              <div>
+                <div class="flex flex-wrap">
+                  <div
+                    v-for="metric in metrics"
+                    :key="metric.id"
+                    class="w-1/2 mb-3">
+                    <p>{{ metric.title }}</p>
+                    <p>{{ metric.displayValue }}</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div>
-            <p class="text-lg">
-              Performance opportunities
-            </p>
+            <div
+              v-else-if="tab === 'opportunities'"
+              key="opportunities">
+              <p class="text-lg">
+                Performance opportunities
+              </p>
 
-            <ul
-              v-if="showMore"
-              class="relative top-0 px-2 h-auto">
-              <li
-                v-for="opportunity in opportunities"
-                :key="opportunity.ID"
-                class="flex justify-between items-start">
-                <span>- {{ opportunity.title }}</span>
-                <span>- {{ opportunity.displayValue }}</span>
-              </li>
-            </ul>
-          </div>
+              <ul
+                v-if="showMore"
+                class="relative top-0 px-2 h-auto list-disc">
+                <li
+                  v-for="opportunity in opportunities"
+                  :key="opportunity.ID"
+                  class="flex justify-between items-start mb-2">
+                  <span class="w-1/2">{{ opportunity.title }}</span>
+                  <span>{{ opportunity.displayValue }}</span>
+                </li>
+              </ul>
+            </div>
+          </transition>
         </div>
 
         <div
           v-else-if="showMore && !lightHouseData.id"
-          class="metrics-div rounded-md shadow-lg p-8 bg-white absolute left-full z-10">
+          :class="[lightHouseData.id ? loaded : '' , 'metrics-div', 'rounded-md', 'shadow-lg', 'p-8', 'bg-white', 'absolute', 'left-full', 'z-10']">
           <p class="text-lg">
             Still Loading this data
           </p>
@@ -243,8 +271,19 @@ export default {
       lightHouseData: {},
       opportunities: [],
       metrics: [],
-      loadingExperience: {}
+      loadingExperience: {},
+      tabs: ['metrics', 'opportunities', 'sdafas', 'fsdfas'],
+      tab: 'metrics'
     };
+  },
+  computed: {
+    sliderLeft() {
+      const numberOfTabsWidth = 100 / this.tabs.length;
+
+      const id = this.tabs.findIndex(tab => tab === this.tab);
+
+      return id * numberOfTabsWidth + '%';
+    }
   },
   mounted() {
     this.fetchLHData();
@@ -319,7 +358,21 @@ export default {
 
 .slide-up-enter,
 .slide-up-leave-to {
-  transform: translateY(100px);
+  transform: translateY(50px);
+  opacity: 0;
+}
+
+.slide-in-enter-active, .slide-in-leave-active{
+  transition: all .5s ease-in;
+}
+
+.slide-in-enter {
+  transform: translateX(-100px);
+  opacity: 0;
+}
+
+.slide-in-leave-to {
+  transform: translateX(100px);
   opacity: 0;
 }
 
@@ -330,12 +383,21 @@ export default {
   opacity: 0;
 }
 
+.slider {
+  transition: .3s all ease-in;
+}
+
 .clipboard {
   fill: transparent;
 }
 
-.metrics-div{
-  width: 300%;
-  top: 0;
+.metrics-div {
+  width: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+button:focus {
+  outline: none;
 }
 </style>

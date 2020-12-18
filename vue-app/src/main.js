@@ -1,11 +1,9 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import store from './store';
+
 import App from './App.vue';
 
-import 'es6-promise/auto';
-
-Vue.use(Vuex);
-
+// Outside click event
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
     window.event = function(event) {
