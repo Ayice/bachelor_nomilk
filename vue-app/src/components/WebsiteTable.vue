@@ -53,10 +53,11 @@
 
         <website-table-item
           v-for="(website, i) in computedWebsites"
-          :key="website.ID"
+          :key="website.id"
           :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
           :filters="filters"
-          :website="website">
+          :website="website"
+          @click.native="focusWebsite(website)">
         </website-table-item>
       </table>
 
@@ -80,7 +81,7 @@
 </template>
 
 <script>
-import { runReport } from '../utils/api';
+import { mapActions, mapGetters } from 'vuex';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -89,12 +90,6 @@ export default {
   components: {
     Options,
     WebsiteTableItem
-  },
-  props: {
-    websites: {
-      type: Array,
-      required: true
-    }
   },
   data() {
     return {
@@ -109,6 +104,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['websites']),
     computedWebsites() {
       if (this.search) {
         return this.websites.filter(post => {
@@ -124,8 +120,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setFocusedWebsite']),
     handleFilterUpdate(data) {
       Object.assign(this.filters, data);
+    },
+    focusWebsite(website) {
+      console.log(website);
+
+      this.setFocusedWebsite(website);
     }
   }
 };

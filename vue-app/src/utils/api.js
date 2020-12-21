@@ -6,10 +6,10 @@ export async function getWebsites(url) {
   return response.data;
 }
 
-export async function deleteWebsite(wpData, id) {
-  const response = await axios.delete(`${wpData.rest_url}/wp/v2/websites/${id}`, {
+export async function deleteWebsite(data) {
+  const response = await axios.delete(`${data.wpData.rest_url}/wp/v2/websites/${data.website.id}`, {
     headers: {
-      'X-WP-Nonce': wpData.nonce
+      'X-WP-Nonce': data.wpData.nonce
     }
   });
 
@@ -34,10 +34,10 @@ export async function getLightHouseData(website) {
   return response.data;
 }
 
-export async function postNewWebsite(data, wpData) {
-  const response = await axios.post(`${wpData.rest_url}/wp/v2/websites`, data, {
+export async function postNewWebsite(data) {
+  const response = await axios.post(`${data.wpData.rest_url}/wp/v2/websites`, data.postData, {
     headers: {
-      'X-WP-Nonce': wpData.nonce
+      'X-WP-Nonce': data.wpData.nonce
     }
   });
 
