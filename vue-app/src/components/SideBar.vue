@@ -258,15 +258,9 @@
 </template>
 
 <script>
-import { postNewWebsite } from '../utils/api';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    websites: {
-      type: Array,
-      required: true
-    }
-  },
   data() {
     return {
       // eslint-disable-next-line
@@ -284,7 +278,60 @@ export default {
       uploadOnSave: true
     };
   },
+  computed: {
+    ...mapGetters(['focusedWebsite'])
+  },
+  watch: {
+    focusedWebsite(val) {
+      if (!val.id) {
+        this.title = '';
+
+        this.googleAnalyticsApiKey = '';
+
+        this.domain = 'https://';
+
+        this.host = '';
+
+        this.serverName = '';
+
+        this.password = '';
+
+        this.port = 21;
+
+        this.protocol = '';
+
+        this.remotePath = '';
+
+        this.upload_on_save = true;
+
+        this.username = this.focusedWebsite.acf.sftp_data.username;
+      } else {
+        this.title = this.focusedWebsite.title.rendered;
+
+        this.googleAnalyticsApiKey = this.focusedWebsite.acf.google_analytics_api_key;
+
+        this.domain = this.focusedWebsite.acf.domain;
+
+        this.host = this.focusedWebsite.acf.sftp_data.host;
+
+        this.serverName = this.focusedWebsite.acf.sftp_data.name;
+
+        this.password = this.focusedWebsite.acf.sftp_data.password;
+
+        this.port = this.focusedWebsite.acf.sftp_data.port;
+
+        this.protocol = this.focusedWebsite.acf.sftp_data.protocol;
+
+        this.remotePath = this.focusedWebsite.acf.sftp_data.remotePath;
+
+        this.upload_on_save = this.focusedWebsite.acf.sftp_data.upload_on_save;
+
+        this.username = this.focusedWebsite.acf.sftp_data.username;
+      }
+    }
+  },
   methods: {
+    ...mapActions(['createNewWebsite']),
     createNewPost() {
       const postData = {
         title: this.title,
@@ -304,9 +351,13 @@ export default {
           }
         }
       };
+      const data = {
+        postData,
+        wpData: this.wpData
+      };
 
-      postNewWebsite(postData, this.wpData)
-        .then(res => {
+      this.createNewWebsite(data)
+        .then(() => {
           this.title = '';
 
           this.googleAnalyticsApiKey = '';
@@ -328,8 +379,6 @@ export default {
           this.remotePath = '';
 
           this.uploadOnSave = true;
-
-          this.$emit('update:websites', res);
         });
     }
   }

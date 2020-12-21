@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import store from './store';
+
 import App from './App.vue';
 
+// Outside click event
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
     window.event = function(event) {
