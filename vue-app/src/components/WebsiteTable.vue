@@ -80,8 +80,6 @@
 </template>
 
 <script>
-import { runReport } from '../utils/api';
-
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
 
