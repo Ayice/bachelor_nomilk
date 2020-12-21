@@ -202,21 +202,18 @@
     <td
       v-if="filters.showUpTime"
       class="relative px-2">
-      {{ website.id }}
-
-      <div class="options-div absolute hidden -right-full top-0">
-        <button
-          class="p-2 text-white font-bold bg-red-500 active:bg-red-600 focus:bg-red-600"
-          @click.stop="removeWebsite">
-          Delete
-        </button>
-      </div>
+      <p
+        class="p-2 text-white font-bold bg-red-500 active:bg-red-600 focus:bg-red-600"
+        @click.stop="handleRemoveWebsite">
+        Delete
+      </p>
     </td>
   </tr>
 </template>
 
 <script>
-import { getLightHouseData, deleteWebsite } from '../utils/api';
+import { getLightHouseData } from '../utils/api';
+import { mapActions } from 'vuex';
 
 export default {
   filters: {
@@ -289,6 +286,7 @@ export default {
     this.fetchLHData();
   },
   methods: {
+    ...mapActions(['removeWebsite']),
     copySFTPData() {
       const sftpData = document.getElementById('sftpData');
 
@@ -331,13 +329,16 @@ export default {
           }
         });
     },
-    removeWebsite() {
-      deleteWebsite(this.wpData, this.website.id).then(() => {
-        this.$emit('remove-website', this.website.id);
-      });
-    },
     closeExtraData() {
       this.showMore = false;
+    },
+    handleRemoveWebsite() {
+      const data = {
+        wpData: this.wpData,
+        website: this.website
+      };
+
+      this.removeWebsite(data);
     }
   }
 };
