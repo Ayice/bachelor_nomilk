@@ -10,7 +10,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://nomilkcustomeroverview.com/'
+    publicPath: 'http://bachelor.local/'
   },
   devServer: {
     disableHostCheck: true,
@@ -22,7 +22,7 @@ module.exports = {
       'nomilk-customer-overview.local',
       'bachelor.local'
     ],
-    publicPath: 'http://nomilkcustomeroverview.com/'
+    publicPath: 'http://bachelor.local/'
   },
   module: {
     rules: [
