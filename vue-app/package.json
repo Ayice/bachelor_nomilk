@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.12.9",
-    "@google-analytics/data": "^1.1.0",
     "autoprefixer": "^10.0.3",
     "axios": "^0.21.0",
     "babel-loader": "^8.2.1",
