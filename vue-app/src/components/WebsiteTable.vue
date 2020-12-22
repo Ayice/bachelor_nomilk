@@ -125,8 +125,6 @@ export default {
       Object.assign(this.filters, data);
     },
     focusWebsite(website) {
-      console.log(website);
-
       this.setFocusedWebsite(website);
     }
   }
