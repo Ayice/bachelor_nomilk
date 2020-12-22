@@ -265,11 +265,17 @@ function cptui_register_my_cpts_websites()
 
 add_action('init', 'cptui_register_my_cpts_websites');
 
+function admin_default_page()
+{
+  return '/';
+}
+
+add_filter('login_redirect', 'admin_default_page');
 
 /**
  * Use ACF in the Rest Api
  */
 
-add_filter( 'acf/rest_api/field_settings/show_in_rest', '__return_true' );
+add_filter('acf/rest_api/field_settings/show_in_rest', '__return_true');
 
-add_filter( 'acf/rest_api/field_settings/edit_in_rest', '__return_true' );
+add_filter('acf/rest_api/field_settings/edit_in_rest', '__return_true');
