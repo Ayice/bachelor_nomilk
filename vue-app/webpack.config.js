@@ -10,7 +10,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: 'http://bachelor.local/'
+    publicPath: 'https://nomilkcustomeroverview.com/'
   },
   devServer: {
     disableHostCheck: true,
@@ -18,11 +18,15 @@ module.exports = {
     host: 'localhost',
     port: 8080,
     allowedHosts: [
+      'nomilkcustomeroverview.com',
       'nomilkcustomeroverview.local',
       'nomilk-customer-overview.local',
-      'bachelor.local'
+      'bachelor.local',
+      'analyticsreporting.googleapis.com',
+      'googleapis.com',
+      'accounts.google.com'
     ],
-    publicPath: 'http://bachelor.local/'
+    publicPath: 'https://nomilkcustomeroverview.com/'
   },
   module: {
     rules: [

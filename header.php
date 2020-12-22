@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The header for our theme
  *
@@ -12,28 +13,29 @@
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
-<head>
-	<meta charset="<?php bloginfo( 'charset' ); ?>">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="profile" href="https://gmpg.org/xfn/11">
 
-	<?php wp_head(); ?>
-</head>
+  <head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
 
-<body <?php body_class(); ?>>
+    <?php wp_head(); ?>
+  </head>
 
-<div id="page" class="site">
-	<header id="masthead" class="site-header">
+  <body <?php body_class(); ?>>
 
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'nomilk' ); ?></button>
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'menu-1',
-				'menu_id'        => 'primary-menu',
-			) );
-			?>
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
+    <div id="page" class="site">
+      <header id="masthead" class="site-header">
 
-	<div id="content" class="site-content">
+        <nav id="site-navigation" class="main-navigation">
+          <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e('Primary Menu', 'nomilk'); ?></button>
+          <?php
+				wp_nav_menu(array(
+					'theme_location' => 'menu-1',
+					'menu_id'        => 'primary-menu',
+				));
+				?>
+        </nav><!-- #site-navigation -->
+      </header><!-- #masthead -->
+
+      <div id="content" class="site-content">
