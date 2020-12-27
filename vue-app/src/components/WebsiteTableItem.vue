@@ -269,7 +269,7 @@ export default {
       opportunities: [],
       metrics: [],
       loadingExperience: {},
-      tabs: ['metrics', 'opportunities', 'sdafas', 'fsdfas'],
+      tabs: ['metrics', 'opportunities'],
       tab: 'metrics'
     };
   },

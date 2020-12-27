@@ -37,10 +37,7 @@ export default {
     this.fetchWebsites(this.rest_url);
   },
   methods: {
-    ...mapActions(['fetchWebsites']),
-    handleNewWebsite(website) {
-      this.websites.push(website);
-    }
+    ...mapActions(['fetchWebsites'])
   }
 };
 </script>

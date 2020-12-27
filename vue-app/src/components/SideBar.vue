@@ -62,6 +62,5 @@ export default {
   components: {
     WebsiteForm
   }
-}
-  
+};
 </script>
