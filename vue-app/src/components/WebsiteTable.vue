@@ -3,8 +3,7 @@
     <options
       class="mb-5"
       :search.sync="search"
-      :filters="filters"
-      @update:filters="handleFilterUpdate">
+      :filters.sync="filters">
     </options>
 
     <div class="shadow w-full bg-white rounded-lg flex flex-wrap">
@@ -121,13 +120,9 @@ export default {
   },
   methods: {
     ...mapActions(['setFocusedWebsite']),
-    handleFilterUpdate(data) {
-      Object.assign(this.filters, data);
-    },
     focusWebsite(website) {
       this.setFocusedWebsite(website);
     }
   }
 };
 </script>
-
