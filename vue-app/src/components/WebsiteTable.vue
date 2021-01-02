@@ -81,6 +81,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { getWordFenceData } from '../utils/api';
 
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
@@ -117,6 +118,9 @@ export default {
         return this.websites;
       }
     }
+  },
+  mounted() {
+    getWordFenceData().then(res => console.log(res));
   },
   methods: {
     ...mapActions(['setFocusedWebsite']),
