@@ -16,6 +16,7 @@ export async function deleteWebsite(data) {
   return response.data;
 }
 
+// TODO: Gem APIKEY et eller andet sted, så vi ikke skriver den direkte i koden :)
 export async function getLightHouseData(website) {
   const params = new URLSearchParams();
 
@@ -40,6 +41,20 @@ export async function postNewWebsite(data) {
       'X-WP-Nonce': data.wpData.nonce
     }
   });
+
+  return response.data;
+}
+
+export async function getWordFenceData(domain) {
+
+  const form = new FormData();
+
+  form.append('lastcttime', 'time');
+  form.append('lastissuetime', 'time');
+  form.append('action', 'wordfence_activityLogUpdate');
+  form.append('nonce', domain.nonceString);
+
+  const response = await axios.post(`${domain.url}/wp-admin/admin-ajax.php`, form);
 
   return response.data;
 }
