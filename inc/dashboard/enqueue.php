@@ -10,17 +10,6 @@ function vue_dashboard_scripts()
     true
   );
 
-  $args = array(
-    'post_type' => 'websites',
-    'posts_per_page' => -1
-  );
-
-  $websites = get_posts($args);
-
-  foreach ($websites as $site) {
-    $site->custom_fields = get_fields($site->ID);
-  }
-
   wp_localize_script(
     'vue_dashboard',
     'wpData',

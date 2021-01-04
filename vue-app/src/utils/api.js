@@ -43,17 +43,3 @@ export async function postNewWebsite(data) {
 
   return response.data;
 }
-
-export async function getWordFenceData() {
-
-  const form = new FormData();
-
-  form.append('lastcttime', '1609158471.872392');
-  form.append('lastissuetime', '1609158469');
-  form.append('action', 'wordfence_activityLogUpdate');
-  form.append('nonce', 'b9bd0ff8cf');
-
-  const response = await axios.post('https://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form);
-
-  return response.data;
-}
