@@ -48,6 +48,11 @@
             class="px-2">
             Uptime
           </th>
+
+          <th
+            class="px-2 justify-center">
+            Details
+          </th>
         </tr>
 
         <website-table-item
@@ -56,6 +61,7 @@
           :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
           :filters="filters"
           :website="website"
+          :wordfence-data="wordfenceData"
           @click.native="focusWebsite(website)">
         </website-table-item>
       </table>
@@ -107,7 +113,8 @@ export default {
         showWordFence: true,
         showConversionRate: true,
         showUpTime: true
-      }
+      },
+      wordfenceData: {}
     };
   },
   computed: {
@@ -142,7 +149,7 @@ export default {
         form.append('action', 'get_wordfence_data');
 
         axios.post('http://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form)
-          .then(result => console.log('test', result.data));
+          .then(result => this.wordfenceData = result.data);
       });
   },
   methods: {

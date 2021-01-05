@@ -79,7 +79,7 @@
                 v-else-if="lightHouseData.id && !lightHouseData.loadingExperience"
                 class="mb-3">
                 <p>
-                  The report for userexperience in Chrome doesn't have enough data to show.
+                  The report for user experience in Chrome doesn't have enough data to show.
                 </p>
               </div>
 
@@ -119,6 +119,26 @@
                 </li>
               </ul>
             </div>
+
+            <div
+              v-else-if="tab === 'wordfence'"
+              key="wordfence">
+              <p class="text-lg">
+                Wordfence issues
+              </p>
+
+              <ul
+                v-if="showMore"
+                class="relative top-0 px-2 h-auto list-disc">
+                <li
+                  v-for="issue in wordfenceData.data.body.issues.new"
+                  :key="issue.id + website.domain"
+                  class="flex justify-between items-start mb-2">
+                  <span class="w-1/2">{{ issue.id }}</span>
+                  <span>{{ issue.shortMsg }}</span>
+                </li>
+              </ul>
+            </div>
           </transition>
         </div>
 
@@ -155,7 +175,7 @@
     <td
       v-if="filters.showWordFence"
       class="px-2">
-      {{ website.acf.google_analytics_api_key }}
+      {{ wordfenceData.data ? wordfenceData.data.body.issueCounts.new : 'loading...' }}
     </td>
 
     <td
@@ -202,12 +222,22 @@
     <td
       v-if="filters.showUpTime"
       class="relative px-2">
-      <p
-        class="p-2 text-white font-bold bg-red-500 active:bg-red-600 focus:bg-red-600"
-        @click.stop="handleRemoveWebsite">
-        Delete
-      </p>
     </td>
+
+    <td
+      class="relative px-2">
+      <span class="flex justify-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </span>
+    </td>
+
+    <div>
+      <span 
+        class="absolute p-2"
+        @click.stop="handleRemoveWebsite">
+        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </span>
+    </div>
   </tr>
 </template>
 
@@ -257,6 +287,10 @@ export default {
     filters: {
       type: Object,
       required: true
+    },
+    wordfenceData: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -269,7 +303,7 @@ export default {
       opportunities: [],
       metrics: [],
       loadingExperience: {},
-      tabs: ['metrics', 'opportunities'],
+      tabs: ['metrics', 'opportunities', 'wordfence'],
       tab: 'metrics'
     };
   },
@@ -338,7 +372,9 @@ export default {
         website: this.website
       };
 
-      this.removeWebsite(data);
+      if (confirm('Are you sure you want to delete this domain?')) {
+        this.removeWebsite(data);
+      }
     }
   }
 };
