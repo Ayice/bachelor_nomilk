@@ -48,6 +48,11 @@
             class="px-2">
             Uptime
           </th>
+
+          <th
+            class="px-2 justify-center">
+            Details
+          </th>
         </tr>
 
         <website-table-item
