@@ -81,7 +81,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-
+import axios from 'axios';
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
 
@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      wpData: wpData,
       search: '',
       filters: {
         showPerformance: true,
@@ -117,6 +118,25 @@ export default {
         return this.websites;
       }
     }
+  },
+  mounted() {
+    const form2 = new FormData();
+
+    form2.append('action', 'get_wordfence_nonce');
+
+    axios.post('http://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form2)
+      .then(res => {
+        console.log(res.data.data.nonce);
+
+        const form = new FormData();
+
+        form.append('nonce', res.data.data.nonce);
+
+        form.append('action', 'get_wordfence_data');
+
+        axios.post('http://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form)
+          .then(result => console.log('test', result.data));
+      });
   },
   methods: {
     ...mapActions(['setFocusedWebsite']),
