@@ -106,17 +106,17 @@
                 Performance opportunities
               </p>
 
-              <ul
-                v-if="showMore"
-                class="relative top-0 px-2 h-auto list-disc">
-                <li
-                  v-for="opportunity in opportunities"
-                  :key="opportunity.ID"
-                  class="flex justify-between items-start mb-2">
-                  <span class="w-1/2">{{ opportunity.title }}</span>
-                  <span>{{ opportunity.displayValue }}</span>
-                </li>
-              </ul>
+              <div>
+                <div class="flex flex-wrap">
+                  <div
+                    v-for="opportunity in opportunities"
+                    :key="opportunity.ID"
+                    class="w-1/2 mb-3">
+                    <p class="w-1/2">{{ opportunity.title }}</p>
+                    <p>{{ opportunity.displayValue }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div
@@ -126,17 +126,17 @@
                 Wordfence issues
               </p>
 
-              <ul
-                v-if="showMore"
-                class="relative top-0 px-2 h-auto list-disc">
-                <li
-                  v-for="issue in wordfenceData.data.body.issues.new"
-                  :key="issue.id + website.domain"
-                  class="flex justify-between items-start mb-2">
-                  <span class="w-1/2">{{ issue.id }}</span>
-                  <span>{{ issue.shortMsg }}</span>
-                </li>
-              </ul>
+              <div>
+                <div class="flex flex-wrap">
+                  <div
+                    v-for="issue in wordfenceData.data.body.issues.new"
+                    :key="issue.id + website.domain"
+                    class="w-1/2 mb-3">
+                    <p class="w-1/2">{{ issue.id }}</p>
+                    <p>{{ issue.shortMsg }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </transition>
         </div>
