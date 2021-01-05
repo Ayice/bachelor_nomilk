@@ -1,169 +1,204 @@
 <template>
-  <div class=" relative mt-10">
+  <div class="relative mt-10">
     <span
       v-if="focusedWebsite.id"
-      class="absolute top-5 right-5"
-      @click="exitEditMode">X</span>
-    <form
-      id="newPostForm"
-      ref="newWebsiteForm"
-      @submit.prevent="createNewPost">
-      <p class="text-lg font-medium">
+      class="absolute top-5 right-5 cursor-pointer"
+      @click="exitEditMode">X
+    </span>
+
+    <div
+      class="flex justify-between align-items-center cursor-pointer"
+      @click="showCreateWebsiteForm(!createNewSiteFormShow)">
+      <p
+        class="text-lg font-medium">
         {{ focusedWebsite.id ? `Update ${focusedWebsite.acf.domain}` : 'Create New Website' }}
       </p>
-
-      <div class="relative mt-3">
-        <input
-          id="4451"
-          v-model="title"
-          required
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          type="text"
-          name="title">
-        <label
-          :class="[{ 'filled-input': title }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="title">Title</label>
+      <div class="w-5 h-5">
+        <svg
+          :class="{ rotate : createNewSiteFormShow }"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7" />
+        </svg>
       </div>
+    </div>
+    <transition
+      name="slide-down"
+      mode="out-in">
+      <form
+        v-if="createNewSiteFormShow"
+        id="newPostForm"
+        key="newForm"
+        ref="newWebsiteForm"
+        @submit.prevent="createNewPost">
+        <div class="relative mt-3">
+          <input
+            id="4451"
+            v-model="title"
+            required
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            type="text"
+            name="title">
+          <label
+            :class="[{ 'filled-input': title }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="title">Title
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="321"
-          v-model="googleAnalyticsApiKey"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[google_analytics_api_key]">
-        <label
-          :class="[{ 'filled-input': googleAnalyticsApiKey }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Google analytics api Key</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="321"
+            v-model="googleAnalyticsApiKey"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[google_analytics_api_key]">
+          <label
+            :class="[{ 'filled-input': googleAnalyticsApiKey }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Google analytics api Key
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="234"
-          v-model="domain"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[domain]">
-        <label
-          :class="[{ 'filled-input': domain }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Domain</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="234"
+            v-model="domain"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[domain]">
+          <label
+            :class="[{ 'filled-input': domain }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Domain
+          </label>
+        </div>
 
-      <p class="mt-10 text-sm font-medium">
-        SFTP Data:
-      </p>
+        <p class="mt-10 text-sm font-medium">
+          SFTP Data:
+        </p>
 
-      <div class="relative mt-2">
-        <input
-          id="18"
-          v-model="serverName"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][host]">
-        <label
-          :class="[{ 'filled-input': serverName }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Server Name</label>
-      </div>
+        <div class="relative mt-2">
+          <input
+            id="18"
+            v-model="serverName"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][host]">
+          <label
+            :class="[{ 'filled-input': serverName }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Server Name
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="19"
-          v-model="host"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][name]">
-        <label
-          :class="[{ 'filled-input': host }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Host</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="19"
+            v-model="host"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][name]">
+          <label
+            :class="[{ 'filled-input': host }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Host
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="17"
-          v-model="protocol"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][protocol]">
-        <label
-          :class="[{ 'filled-input': protocol }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Protocol</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="17"
+            v-model="protocol"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][protocol]">
+          <label
+            :class="[{ 'filled-input': protocol }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Protocol
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="16"
-          v-model="port"
-          required
-          type="number"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][port]">
-        <label
-          :class="[{ 'filled-input': port }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Port</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="16"
+            v-model="port"
+            required
+            type="number"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][port]">
+          <label
+            :class="[{ 'filled-input': port }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Port
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="15"
-          v-model="username"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][username]">
-        <label
-          :class="[{ 'filled-input': username }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="username">Username</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="15"
+            v-model="username"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][username]">
+          <label
+            :class="[{ 'filled-input': username }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="username">Username
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="14"
-          v-model="password"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][password]">
-        <label
-          :class="[{ 'filled-input': password }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Password</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="14"
+            v-model="password"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][password]">
+          <label
+            :class="[{ 'filled-input': password }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Password
+          </label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="13"
-          v-model="remotePath"
-          required
-          type="text"
-          class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
-          name="fields[sftp_data][remotePath]">
-        <label
-          :class="[{ 'filled-input': remotePath }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
-          for="">Remote Path</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="13"
+            v-model="remotePath"
+            required
+            type="text"
+            class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
+            name="fields[sftp_data][remotePath]">
+          <label
+            :class="[{ 'filled-input': remotePath }, 'text-gray-400', 'z-10', 'absolute', 'pointer-events-none', 'left-2', 'search-label', 'text-xs']"
+            for="">Remote Path</label>
+        </div>
 
-      <div class="relative mt-3">
-        <input
-          id="12"
-          v-model="uploadOnSave"
-          required
-          type="checkbox"
-          name="fields[sftp_data][uploadonsave]">
-        <label
-          class="text-md"
-          for="12">Upload on Save</label>
-      </div>
+        <div class="relative mt-3">
+          <input
+            id="12"
+            v-model="uploadOnSave"
+            required
+            type="checkbox"
+            name="fields[sftp_data][uploadonsave]">
+          <label
+            class="text-md"
+            for="12">Upload on Save</label>
+        </div>
 
-      <button
-        class="w-full shadow mt-2 justify-center font-bold p-2 text-white bg-blue-500 hover:bg-blue-600 active:outline-none active:bg-blue-500 focus:bg-blue-500"
-        type="submit">
-        Submit
-      </button>
-    </form>
+        <button
+          class="w-full shadow mt-2 justify-center font-bold p-2 text-white bg-blue-500 hover:bg-blue-600 active:outline-none active:bg-blue-500 focus:bg-blue-500"
+          type="submit">
+          Submit
+        </button>
+      </form>
+    </transition>
   </div>
 </template>
 
@@ -175,6 +210,7 @@ export default {
   name: 'WebsiteForm',
   data() {
     return {
+      showInputs: false,
       // eslint-disable-next-line
       wpData: wpData,
       title: '',
@@ -191,7 +227,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['focusedWebsite'])
+    ...mapGetters(['focusedWebsite', 'createNewSiteFormShow'])
   },
   watch: {
     focusedWebsite(val) {
@@ -243,7 +279,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createNewWebsite', 'setFocusedWebsite']),
+    ...mapActions(['createNewWebsite', 'setFocusedWebsite', 'showCreateWebsiteForm']),
     createNewPost() {
       const postData = {
         title: this.title,
@@ -341,5 +377,13 @@ export default {
     bottom: 120%;
     transform: translateY(100%);
     font-size: 60%;
+  }
+
+  svg {
+    transition: all .3s ease;
+  }
+
+  .rotate {
+    transform: rotate(180deg);
   }
 </style>

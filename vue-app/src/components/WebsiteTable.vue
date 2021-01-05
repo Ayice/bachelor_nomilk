@@ -82,6 +82,13 @@
         </p>
       </div>
     </div>
+    <div
+      class="flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-0 w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
+      @click="showCreateWebsiteForm(true)">
+      <span class="flex align-items-center">
+        +
+      </span>
+    </div>
   </div>
 </template>
 
@@ -146,7 +153,7 @@ export default {
       });
   },
   methods: {
-    ...mapActions(['setFocusedWebsite']),
+    ...mapActions(['setFocusedWebsite', 'showCreateWebsiteForm']),
     focusWebsite(website) {
       this.setFocusedWebsite(website);
     }
