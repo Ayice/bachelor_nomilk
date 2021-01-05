@@ -225,7 +225,7 @@
 
     <td
       class="relative px-2"
-      @click="showMore = true">
+      @click.stop="showMore = true">
       <span class="flex justify-center">
         <svg
           class="w-6 h-6"

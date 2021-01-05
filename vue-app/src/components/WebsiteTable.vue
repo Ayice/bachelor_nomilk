@@ -50,7 +50,7 @@
           </th>
 
           <th
-          v-if="filters.details"
+            v-if="filters.details"
             class="px-2 justify-center">
             Details
           </th>
@@ -84,7 +84,7 @@
       </div>
     </div>
     <div
-      class="mt-3 flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-0 w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
+      class="mt-3 flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-full w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
       @click="showCreateWebsiteForm(true)"
       @mouseover="showTooltip = true"
       @mouseleave="showTooltip = false">
