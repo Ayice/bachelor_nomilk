@@ -84,10 +84,23 @@
       </div>
     </div>
     <div
-      class="flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-0 w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
-      @click="showCreateWebsiteForm(true)">
-      <span class="flex align-items-center">
+      class="mt-3 flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-0 w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
+      @click="showCreateWebsiteForm(true)"
+      @mouseover="showTooltip = true"
+      @mouseleave="showTooltip = false">
+      <span
+        class="w-full h-full justify-center flex align-items-center relative  pointer-events-none">
         +
+
+        <transition
+          name="slide-up"
+          mode="out-in">
+          <div
+            v-if="showTooltip"
+            class="tooltip w-48 absolute top-full left-0 h-full bg-transparent flex align-items-center justify-center text-gray font-bold px-2 rounded-sm">
+            Create new website
+          </div>
+        </transition>
       </span>
     </div>
   </div>
@@ -106,6 +119,7 @@ export default {
   },
   data() {
     return {
+      showTooltip: false,
       wpData: wpData,
       search: '',
       filters: {

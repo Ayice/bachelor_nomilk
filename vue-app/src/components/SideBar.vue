@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-wrapper flex flex-col h-screen align-items-center py-5 bg-gray-200">
+  <div class="sidebar-wrapper flex flex-col h-full align-items-center py-5 bg-gray-200">
     <!-- wrapper -->
 
     <div class="flex flex-col h-screen w-4/5">
@@ -73,7 +73,9 @@ export default {
   },
   data() {
     return {
+      // eslint-disable-next-line
       user: wpData.user,
+      // eslint-disable-next-line
       userAvatar: wpData.user_avatar
     };
   }
