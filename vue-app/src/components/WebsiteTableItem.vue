@@ -41,7 +41,7 @@
               :key="tabName"
               :style="{ width: 100 / tabs.length + '%'}"
               :class="[{ 'text-blue-500' : tab === tabName }, 'tab', 'text-center', 'p-2', 'font-bold', 'text-gray-700', 'hover:bg-gray-200', 'transition']"
-              @click="tab = tabName">
+              @click.stop="tab = tabName">
               {{ tabName.toUpperCase() }}
             </div>
 
@@ -91,9 +91,13 @@
                   <div
                     v-for="metric in metrics"
                     :key="metric.id"
-                    class="w-1/2 mb-3">
-                    <p>{{ metric.title }}</p>
-                    <p>{{ metric.displayValue }}</p>
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/2">
+                      {{ metric.title }}
+                    </p>
+                    <p class="w-1/6">
+                      {{ metric.displayValue }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -111,9 +115,13 @@
                   <div
                     v-for="opportunity in opportunities"
                     :key="opportunity.ID"
-                    class="w-1/2 mb-3">
-                    <p class="w-1/2">{{ opportunity.title }}</p>
-                    <p>{{ opportunity.displayValue }}</p>
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/2">
+                      {{ opportunity.title }}
+                    </p>
+                    <p class="w-2/5">
+                      {{ opportunity.displayValue }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -128,12 +136,18 @@
 
               <div>
                 <div class="flex flex-wrap">
+                  <div>
+                  </div>
                   <div
                     v-for="issue in wordfenceData.data.body.issues.new"
                     :key="issue.id + website.domain"
-                    class="w-1/2 mb-3">
-                    <p class="w-1/2">{{ issue.id }}</p>
-                    <p>{{ issue.shortMsg }}</p>
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/12">
+                      {{ issue.id }}
+                    </p>
+                    <p class="w-9/12">
+                      {{ issue.shortMsg }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -447,7 +461,7 @@ export default {
 }
 
 .metrics-div {
-  width: 600px;
+  width: 700px;
   overflow-x: hidden;
   overflow-y: auto;
 }
