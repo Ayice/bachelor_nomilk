@@ -154,7 +154,21 @@
                 type="checkbox"
                 name="upTime"
                 @change="handleFilterUpdate('showUpTime')">
-              <span class="ml-3">UpTime</span></label>
+              <span class="ml-3">UpTime</span>
+            </label>
+
+            <label
+              class="flex items-center"
+              for="details">
+              <input
+                id="details"
+                :value="filters.details"
+                :checked="filters.details"
+                type="checkbox"
+                name="details"
+                @change="handleFilterUpdate('details')">
+              <span class="ml-3">Details</span>
+            </label>
           </div>
         </transition>
       </div>

@@ -50,6 +50,7 @@
           </th>
 
           <th
+          v-if="filters.details"
             class="px-2 justify-center">
             Details
           </th>
@@ -112,7 +113,8 @@ export default {
         showSeo: true,
         showWordFence: true,
         showConversionRate: true,
-        showUpTime: true
+        showUpTime: true,
+        details: true
       },
       wordfenceData: {}
     };
