@@ -10,14 +10,14 @@
         <div>
           <img
             class="mb-6 w-full"
-            src="http://bachelor.local/wp-content/uploads/2020/12/nomilk.svg"
+            src="http://nomilkcustomeroverview.com/wp-content/uploads/2020/12/nomilk.svg"
             alt="NoMilk Logo"><!-- logo image her -->
         </div>
 
         <div class="flex items-start">
           <img
             class="rounded-full h-12 w-12"
-            src="http://bachelor.local/wp-content/uploads/2020/12/Mathias-til-jobside.jpg"
+            src="http://nomilkcustomeroverview.com/wp-content/uploads/2020/12/Mathias-til-jobside.jpg"
             alt="Mathias Vorret"><!-- user image her-->
           <div class="flex flex-col  pl-2">
             <p class="text-lg font-semibold">
