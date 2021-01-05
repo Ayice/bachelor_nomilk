@@ -1,8 +1,7 @@
 <template>
   <tr
     v-click-outside="closeExtraData"
-    class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium"
-    @click="showMore = true">
+    class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium">
     <td class="px-2">
       {{ website.acf.domain }}
     </td>
@@ -225,7 +224,8 @@
     </td>
 
     <td
-      class="relative px-2">
+      class="relative px-2"
+      @click="showMore = true">
       <span class="flex justify-center">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
       </span>
