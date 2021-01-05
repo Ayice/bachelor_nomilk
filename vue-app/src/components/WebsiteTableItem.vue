@@ -222,11 +222,6 @@
     <td
       v-if="filters.showUpTime"
       class="relative px-2">
-      <p
-        class="p-2 text-white font-bold bg-red-500 active:bg-red-600 focus:bg-red-600"
-        @click.stop="handleRemoveWebsite">
-        Delete
-      </p>
     </td>
 
     <td
@@ -235,6 +230,14 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
       </span>
     </td>
+
+    <div>
+      <span 
+        class="absolute p-2"
+        @click.stop="handleRemoveWebsite">
+        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </span>
+    </div>
   </tr>
 </template>
 
@@ -369,7 +372,9 @@ export default {
         website: this.website
       };
 
-      this.removeWebsite(data);
+      if (confirm('Are you sure you want to delete this domain?')) {
+        this.removeWebsite(data);
+      }
     }
   }
 };
