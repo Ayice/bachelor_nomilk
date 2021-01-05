@@ -58,3 +58,13 @@ export async function getWordFenceData(domain) {
 
   return response.data;
 }
+
+export async function putWebsite(data) {
+  const response = await axios.post(`${data.wpData.rest_url}/wp/v2/websites/${data.postData.id}`, data.postData, {
+    headers: {
+      'X-WP-Nonce': data.wpData.nonce
+    }
+  });
+
+  return response.data;
+}

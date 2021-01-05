@@ -1,11 +1,5 @@
 <template>
   <div class="relative mt-10">
-    <span
-      v-if="focusedWebsite.id"
-      class="absolute top-5 right-5 cursor-pointer"
-      @click="exitEditMode">X
-    </span>
-
     <div
       class="flex justify-between align-items-center cursor-pointer"
       @click="showCreateWebsiteForm(!createNewSiteFormShow)">
@@ -195,7 +189,14 @@
         <button
           class="w-full shadow mt-2 justify-center font-bold p-2 text-white bg-blue-500 hover:bg-blue-600 active:outline-none active:bg-blue-500 focus:bg-blue-500"
           type="submit">
-          Submit
+          {{ focusedWebsite.id ? 'Update' :'Submit' }}
+        </button>
+
+        <button
+          v-if="focusedWebsite.id"
+          class="justify-center mt-3 p-2 w-1/2 bg-gray-400 hover:bg-gray-600 active:outline-none active:bg-gray-400 focus:bg-gray-400 font-bold text-white"
+          @click="exitEditMode">
+          Cancel Edit
         </button>
       </form>
     </transition>
@@ -279,7 +280,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createNewWebsite', 'setFocusedWebsite', 'showCreateWebsiteForm']),
+    ...mapActions(['createNewWebsite', 'setFocusedWebsite', 'showCreateWebsiteForm', 'updateWebsite']),
     createNewPost() {
       const postData = {
         title: this.title,
@@ -299,35 +300,50 @@ export default {
           }
         }
       };
+
       const data = {
         postData,
         wpData: this.wpData
       };
 
-      this.createNewWebsite(data)
-        .then(() => {
-          this.title = '';
+      if (this.focusedWebsite.id) {
 
-          this.googleAnalyticsApiKey = '';
+        postData.id = this.focusedWebsite.id;
 
-          this.domain = 'https://';
+        console.log(data);
 
-          this.host = '';
+        this.updateWebsite(data)
+          .then(() => {
+            this.setFocusedWebsite({});
 
-          this.serverName = '';
+            this.showCreateWebsiteForm(false);
+          });
+      } else {
+        this.createNewWebsite(data)
+          .then(() => {
+            this.title = '';
 
-          this.protocol = '';
+            this.googleAnalyticsApiKey = '';
 
-          this.port = 21;
+            this.domain = 'https://';
 
-          this.username = '';
+            this.host = '';
 
-          this.password = '';
+            this.serverName = '';
 
-          this.remotePath = '';
+            this.protocol = '';
 
-          this.uploadOnSave = true;
-        });
+            this.port = 21;
+
+            this.username = '';
+
+            this.password = '';
+
+            this.remotePath = '';
+
+            this.uploadOnSave = true;
+          });
+      }
     },
     exitEditMode() {
       this.setFocusedWebsite({});
