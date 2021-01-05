@@ -8,9 +8,13 @@ import { getWebsites, postNewWebsite, deleteWebsite } from './utils/api';
 const store = new Vuex.Store({
   state: {
     websites: [],
-    focusedWebsite: {}
+    focusedWebsite: {},
+    createNewSiteFormShow: false
   },
   mutations: {
+    SET_CREATE_WEBSITE_FORM(state, data) {
+      state.createNewSiteFormShow = data;
+    },
     SET_WEBSITES(state, data) {
       state.websites = data;
     },
@@ -27,6 +31,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    showCreateWebsiteForm({ commit }, data) {
+      commit('SET_CREATE_WEBSITE_FORM', data);
+    },
     setWebsites({ commit }, data) {
       commit('SET_WEBSITES', data);
     },
@@ -70,7 +77,8 @@ const store = new Vuex.Store({
   },
   getters: {
     websites: state => state.websites,
-    focusedWebsite: state => state.focusedWebsite
+    focusedWebsite: state => state.focusedWebsite,
+    createNewSiteFormShow: state => state.createNewSiteFormShow
   }
 });
 

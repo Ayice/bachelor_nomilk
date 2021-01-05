@@ -2,7 +2,7 @@
   <div class="sidebar-wrapper flex flex-col h-screen align-items-center py-5 bg-gray-200">
     <!-- wrapper -->
 
-    <div class="flex flex-col h-screen justify-between w-4/5">
+    <div class="flex flex-col h-screen w-4/5">
       <!-- logo og user+role container -->
 
       <div class="flex flex-col">
@@ -17,14 +17,20 @@
         <div class="flex items-start">
           <img
             class="rounded-full h-12 w-12"
-            src="http://bachelor.local/wp-content/uploads/2020/12/Mathias-til-jobside.jpg"
+            :src="userAvatar"
             alt="Mathias Vorret"><!-- user image her-->
           <div class="flex flex-col  pl-2">
             <p class="text-lg font-semibold">
-              User name
+              {{ user.data.display_name }}
             </p> <!-- user name -->
             <p class="text-sm font-normal">
-              User role
+              <ul>
+                <li
+                  v-for="role in user.roles"
+                  :key="role">
+                  {{ role }}
+                </li>
+              </ul>
             </p> <!-- user role -->
           </div>
         </div>
@@ -32,9 +38,9 @@
 
       <website-form></website-form>
 
-      <div class="flex align-items-start">
+      <div class="flex mt-auto">
         <!-- logout container -->
-        <button class="w-full hover:bg-transparent hover:text-indigo-600 focus:bg-transparent focus:outline-none focus:border-none active:bg-none">
+        <button class="hover:bg-transparent hover:text-indigo-600 focus:bg-transparent focus:outline-none focus:border-none active:bg-none">
           <svg
             class="h-8 w-8"
             xmlns="http://www.w3.org/2000/svg"
@@ -47,8 +53,11 @@
               stroke-width="2"
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Log ud
         </button>
+
+        <span>
+          Log ud
+        </span>
       </div>
     </div>
   </div>
@@ -61,6 +70,12 @@ import WebsiteForm from './WebsiteForm.vue';
 export default {
   components: {
     WebsiteForm
+  },
+  data() {
+    return {
+      user: wpData.user,
+      userAvatar: wpData.user_avatar
+    };
   }
 };
 </script>
