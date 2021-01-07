@@ -1,10 +1,9 @@
 <template>
   <tr
     v-click-outside="closeExtraData"
-    class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium"
-    @click="showMore = true">
+    class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium">
     <td class="px-2">
-      {{ website.acf.domain }}
+      {{ website.title.rendered }}
     </td>
 
     <td
@@ -42,7 +41,7 @@
               :key="tabName"
               :style="{ width: 100 / tabs.length + '%'}"
               :class="[{ 'text-blue-500' : tab === tabName }, 'tab', 'text-center', 'p-2', 'font-bold', 'text-gray-700', 'hover:bg-gray-200', 'transition']"
-              @click="tab = tabName">
+              @click.stop="tab = tabName">
               {{ tabName.toUpperCase() }}
             </div>
 
@@ -79,7 +78,7 @@
                 v-else-if="lightHouseData.id && !lightHouseData.loadingExperience"
                 class="mb-3">
                 <p>
-                  The report for userexperience in Chrome doesn't have enough data to show.
+                  The report for user experience in Chrome doesn't have enough data to show.
                 </p>
               </div>
 
@@ -92,9 +91,13 @@
                   <div
                     v-for="metric in metrics"
                     :key="metric.id"
-                    class="w-1/2 mb-3">
-                    <p>{{ metric.title }}</p>
-                    <p>{{ metric.displayValue }}</p>
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/2">
+                      {{ metric.title }}
+                    </p>
+                    <p class="w-1/6">
+                      {{ metric.displayValue }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -107,17 +110,47 @@
                 Performance opportunities
               </p>
 
-              <ul
-                v-if="showMore"
-                class="relative top-0 px-2 h-auto list-disc">
-                <li
-                  v-for="opportunity in opportunities"
-                  :key="opportunity.ID"
-                  class="flex justify-between items-start mb-2">
-                  <span class="w-1/2">{{ opportunity.title }}</span>
-                  <span>{{ opportunity.displayValue }}</span>
-                </li>
-              </ul>
+              <div>
+                <div class="flex flex-wrap">
+                  <div
+                    v-for="opportunity in opportunities"
+                    :key="opportunity.ID"
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/2">
+                      {{ opportunity.title }}
+                    </p>
+                    <p class="w-2/5">
+                      {{ opportunity.displayValue }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-else-if="tab === 'wordfence' && !wordfenceData.errorMsg"
+              key="wordfence">
+              <p class="text-lg">
+                Wordfence issues
+              </p>
+
+              <div>
+                <div class="flex flex-wrap">
+                  <div>
+                  </div>
+                  <div
+                    v-for="issue in wordfenceData.data.body.issues.new"
+                    :key="issue.id + website.domain"
+                    class="flex justify-between w-full mb-3 border-b-2 border-b-gray">
+                    <p class="w-1/12">
+                      {{ issue.id }}
+                    </p>
+                    <p class="w-9/12">
+                      {{ issue.shortMsg }}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </transition>
         </div>
@@ -153,9 +186,15 @@
     </td>
 
     <td
-      v-if="filters.showWordFence"
+      v-if="filters.showWordFence && !wordfenceData.errorMsg"
       class="px-2">
-      {{ website.acf.google_analytics_api_key }}
+      {{ wordfenceData.data && !wordfenceData.errorMsg ? wordfenceData.data.body.issueCounts.new : 'loading...' }}
+    </td>
+
+    <td
+      v-else-if="filters.showWordFence && wordfenceData.errorMsg"
+      class="px-2">
+      {{ wordfenceData.errorMsg }}
     </td>
 
     <td
@@ -202,18 +241,48 @@
     <td
       v-if="filters.showUpTime"
       class="relative px-2">
-      <p
-        class="p-2 text-white font-bold bg-red-500 active:bg-red-600 focus:bg-red-600"
-        @click.stop="handleRemoveWebsite">
-        Delete
-      </p>
     </td>
+
+    <td
+      class="relative px-2"
+      @click.stop="showMore = true">
+      <span class="flex justify-center">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"></path></svg>
+      </span>
+    </td>
+
+    <div>
+      <span
+        class="absolute p-2"
+        @click.stop="handleRemoveWebsite">
+        <svg
+          class="w-6 h-6 text-red-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </span>
+    </div>
   </tr>
 </template>
 
 <script>
 import { getLightHouseData } from '../utils/api';
 import { mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   filters: {
@@ -268,8 +337,9 @@ export default {
       lightHouseData: {},
       opportunities: [],
       metrics: [],
+      wordfenceData: {},
       loadingExperience: {},
-      tabs: ['metrics', 'opportunities', 'sdafas', 'fsdfas'],
+      tabs: ['metrics', 'opportunities', 'wordfence'],
       tab: 'metrics'
     };
   },
@@ -284,9 +354,30 @@ export default {
   },
   mounted() {
     this.fetchLHData();
+    this.getWordFenceData();
   },
   methods: {
     ...mapActions(['removeWebsite']),
+
+    getWordFenceData() {
+      const form2 = new FormData();
+
+      form2.append('action', 'get_wordfence_nonce');
+
+      axios.post(`${this.website.acf.domain}/wp-admin/admin-ajax.php`, form2)
+        .then(res => {
+          const form = new FormData();
+
+          form.append('nonce', res.data.data.nonce);
+
+          form.append('action', 'get_wordfence_data');
+
+          axios.post(`${this.website.acf.domain}/wp-admin/admin-ajax.php`, form)
+            .then(result => this.wordfenceData = result.data);
+        }).catch(() => {
+          this.wordfenceData.errorMsg = 'N/A';
+        });
+    },
     copySFTPData() {
       const sftpData = document.getElementById('sftpData');
 
@@ -338,7 +429,9 @@ export default {
         website: this.website
       };
 
-      this.removeWebsite(data);
+      if (confirm('Are you sure you want to delete this domain?')) {
+        this.removeWebsite(data);
+      }
     }
   }
 };
@@ -393,7 +486,7 @@ export default {
 }
 
 .metrics-div {
-  width: 600px;
+  width: 700px;
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -3,14 +3,27 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-import { getWebsites, postNewWebsite, deleteWebsite } from './utils/api';
+import { getWebsites, postNewWebsite, deleteWebsite, putWebsite } from './utils/api';
 
 const store = new Vuex.Store({
   state: {
     websites: [],
-    focusedWebsite: {}
+    focusedWebsite: {},
+    createNewSiteFormShow: false
   },
   mutations: {
+    SET_UPDATED_POST(state, data) {
+      console.log('mutations', data);
+
+      const index = state.websites.findIndex(website => website.id === data.id);
+
+      console.log(index);
+
+      Object.assign(state.websites[index], data);
+    },
+    SET_CREATE_WEBSITE_FORM(state, data) {
+      state.createNewSiteFormShow = data;
+    },
     SET_WEBSITES(state, data) {
       state.websites = data;
     },
@@ -27,6 +40,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    showCreateWebsiteForm({ commit }, data) {
+      commit('SET_CREATE_WEBSITE_FORM', data);
+    },
     setWebsites({ commit }, data) {
       commit('SET_WEBSITES', data);
     },
@@ -64,13 +80,24 @@ const store = new Vuex.Store({
           console.log('An error occurred trying to delete the website. Try again');
         });
     },
-    setFocusedWebsite({ commit }, data) {
+    setFocusedWebsite({ commit, dispatch }, data) {
       commit('SET_FOCUSED_WEBSITE', data);
+
+      if (data.id) {
+        dispatch('showCreateWebsiteForm', true);
+      }
+    },
+    updateWebsite({ commit }, data) {
+      putWebsite(data)
+        .then(res => {
+          commit('SET_UPDATED_POST', res);
+        });
     }
   },
   getters: {
     websites: state => state.websites,
-    focusedWebsite: state => state.focusedWebsite
+    focusedWebsite: state => state.focusedWebsite,
+    createNewSiteFormShow: state => state.createNewSiteFormShow
   }
 });
 

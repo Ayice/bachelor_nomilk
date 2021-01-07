@@ -10,16 +10,8 @@ function vue_dashboard_scripts()
     true
   );
 
-  $args = array(
-    'post_type' => 'websites',
-    'posts_per_page' => -1
-  );
-
-  $websites = get_posts($args);
-
-  foreach ($websites as $site) {
-    $site->custom_fields = get_fields($site->ID);
-  }
+  $user = wp_get_current_user();
+  $user_avatar = get_avatar_url($user->ID);
 
   wp_localize_script(
     'vue_dashboard',
@@ -28,7 +20,8 @@ function vue_dashboard_scripts()
       'nonce' => wp_create_nonce('wp_rest'),
       'template_directory_uri' => get_stylesheet_directory_uri(),
       'rest_url' => untrailingslashit(esc_url_raw(rest_url())),
-      'posts' => $websites,
+      'user' => $user,
+      'user_avatar' =>  $user_avatar
     )
   );
 

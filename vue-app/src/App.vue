@@ -37,10 +37,7 @@ export default {
     this.fetchWebsites(this.rest_url);
   },
   methods: {
-    ...mapActions(['fetchWebsites']),
-    handleNewWebsite(website) {
-      this.websites.push(website);
-    }
+    ...mapActions(['fetchWebsites'])
   }
 };
 </script>
@@ -54,6 +51,10 @@ export default {
 
   #masthead {
     display: none;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, /* Firefox supports this but not yet `system-ui` */ 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji' !important;
   }
 
   @tailwind base;

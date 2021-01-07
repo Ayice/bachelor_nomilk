@@ -3,13 +3,12 @@
     <options
       class="mb-5"
       :search.sync="search"
-      :filters="filters"
-      @update:filters="handleFilterUpdate">
+      :filters.sync="filters">
     </options>
 
     <div class="shadow w-full bg-white rounded-lg flex flex-wrap">
       <table
-        v-if="websites.length"
+        v-if="computedWebsites.length"
         class="w-full text-sm">
         <tr class="text-left bg-gray-100 px-2">
           <th class="px-2">
@@ -49,6 +48,12 @@
             class="px-2">
             Uptime
           </th>
+
+          <th
+            v-if="filters.details"
+            class="px-2 justify-center">
+            Details
+          </th>
         </tr>
 
         <website-table-item
@@ -77,6 +82,26 @@
         </p>
       </div>
     </div>
+    <div
+      class="mt-3 flex items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-full w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
+      @click="showCreateWebsiteForm(true)"
+      @mouseover="showTooltip = true"
+      @mouseleave="showTooltip = false">
+      <span
+        class="w-full h-full justify-center flex items-center relative  pointer-events-none">
+        +
+
+        <transition
+          name="slide-up"
+          mode="out-in">
+          <div
+            v-if="showTooltip"
+            class="tooltip w-48 absolute top-full left-0 h-full bg-transparent flex items-center justify-center text-gray font-bold px-2 rounded-sm">
+            Create new website
+          </div>
+        </transition>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -93,13 +118,16 @@ export default {
   },
   data() {
     return {
+      showTooltip: false,
+      wpData: wpData,
       search: '',
       filters: {
         showPerformance: true,
         showSeo: true,
         showWordFence: true,
         showConversionRate: true,
-        showUpTime: true
+        showUpTime: true,
+        details: true
       }
     };
   },
@@ -119,17 +147,12 @@ export default {
       }
     }
   },
-  methods: {
-    ...mapActions(['setFocusedWebsite']),
-    handleFilterUpdate(data) {
-      Object.assign(this.filters, data);
-    },
-    focusWebsite(website) {
-      console.log(website);
 
+  methods: {
+    ...mapActions(['setFocusedWebsite', 'showCreateWebsiteForm']),
+    focusWebsite(website) {
       this.setFocusedWebsite(website);
     }
   }
 };
 </script>
-
