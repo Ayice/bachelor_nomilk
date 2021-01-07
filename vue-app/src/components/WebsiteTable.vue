@@ -8,7 +8,7 @@
 
     <div class="shadow w-full bg-white rounded-lg flex flex-wrap">
       <table
-        v-if="websites.length"
+        v-if="computedWebsites.length"
         class="w-full text-sm">
         <tr class="text-left bg-gray-100 px-2">
           <th class="px-2">
@@ -62,7 +62,6 @@
           :class="[{'border-t-2': i < websites.length}, {'border-b-2' : i + 1 === websites.length}]"
           :filters="filters"
           :website="website"
-          :wordfence-data="wordfenceData"
           @click.native="focusWebsite(website)">
         </website-table-item>
       </table>
@@ -84,12 +83,12 @@
       </div>
     </div>
     <div
-      class="mt-3 flex align-items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-full w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
+      class="mt-3 flex items-center justify-center border border-2 border-gray-500 shadow-lg rounded-full aboslute bottom-0 left-full w-10 h-10 hover:bg-gray-300 transition cursor-pointer"
       @click="showCreateWebsiteForm(true)"
       @mouseover="showTooltip = true"
       @mouseleave="showTooltip = false">
       <span
-        class="w-full h-full justify-center flex align-items-center relative  pointer-events-none">
+        class="w-full h-full justify-center flex items-center relative  pointer-events-none">
         +
 
         <transition
@@ -97,7 +96,7 @@
           mode="out-in">
           <div
             v-if="showTooltip"
-            class="tooltip w-48 absolute top-full left-0 h-full bg-transparent flex align-items-center justify-center text-gray font-bold px-2 rounded-sm">
+            class="tooltip w-48 absolute top-full left-0 h-full bg-transparent flex items-center justify-center text-gray font-bold px-2 rounded-sm">
             Create new website
           </div>
         </transition>
@@ -108,7 +107,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import axios from 'axios';
+
 import Options from './Options.vue';
 import WebsiteTableItem from './WebsiteTableItem.vue';
 
@@ -129,8 +128,7 @@ export default {
         showConversionRate: true,
         showUpTime: true,
         details: true
-      },
-      wordfenceData: {}
+      }
     };
   },
   computed: {
@@ -149,25 +147,7 @@ export default {
       }
     }
   },
-  mounted() {
-    const form2 = new FormData();
 
-    form2.append('action', 'get_wordfence_nonce');
-
-    axios.post('http://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form2)
-      .then(res => {
-        console.log(res.data.data.nonce);
-
-        const form = new FormData();
-
-        form.append('nonce', res.data.data.nonce);
-
-        form.append('action', 'get_wordfence_data');
-
-        axios.post('http://anderskjaerp.dk/reberbans-blomster/wp-admin/admin-ajax.php', form)
-          .then(result => this.wordfenceData = result.data);
-      });
-  },
   methods: {
     ...mapActions(['setFocusedWebsite', 'showCreateWebsiteForm']),
     focusWebsite(website) {

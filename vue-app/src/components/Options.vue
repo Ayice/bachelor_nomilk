@@ -36,142 +36,116 @@
       </div>
     </div>
 
-    <div class="w-1/6 flex justify-end self-end">
-      <div class="w-1/3 mr-3 relative">
-        <button class="w-full h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 active:outline-none active:border-0 focus:border-0 focus:outline-none focus:bg-gray-300">
-          <div class="w-1/2 m-auto">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="-2.5 -2.5 30 30"
-              fill="#fff"
-              preserveAspectRatio="none"
-              stroke="#333">
-              <path
-                stroke-linecap="butt"
-                stroke-linejoin="butt"
-                stroke-width="1"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path
-                stroke-linecap="square"
-                stroke-linejoin="square"
-                stroke-width="1"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-        </button>
-      </div>
+    <div
+      v-click-outside="closeFilter"
+      class="w-1/12 relative flex justify-end">
+      <button
+        type="button"
+        class="w-1/2 h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 active:outline-none"
+        @click="showFilters = !showFilters">
+        <div class="w-1/2 m-auto filter-menu">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="-2.5 -5 30 30"
+            fill="#fff"
+            preserveAspectRatio="none"
+            stroke="#333">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+        </div>
+      </button>
 
-      <div
-        v-click-outside="closeFilter"
-        class="w-1/3 relative">
-        <button
-          type="button"
-          class="w-full h-full shadow-lg bg-gray-100 text-white font-bold py-1 px-0 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 active:outline-none"
-          @click="showFilters = !showFilters">
-          <div class="w-1/2 m-auto filter-menu">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="-2.5 -5 30 30"
-              fill="#fff"
-              preserveAspectRatio="none"
-              stroke="#333">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1"
-                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-          </div>
-        </button>
+      <transition name="slide-down">
+        <div
+          v-if="showFilters"
+          class="top-full z-10 flex flex-column absolute left-0 bg-white p-3 whitespace-nowrap">
+          <p class="font-bold">
+            Filter view
+          </p>
 
-        <transition name="slide-down">
-          <div
-            v-if="showFilters"
-            class="z-10 flex flex-column absolute left-0 bg-white p-3 whitespace-nowrap">
-            <p class="font-bold">
-              Filter view
-            </p>
+          <label
+            class="flex items-center"
+            for="performance">
+            <input
+              id="performance"
+              :value="filters.showPerformance"
+              :checked="filters.showPerformance"
+              type="checkbox"
+              name="performance"
+              @change="handleFilterUpdate('showPerformance')">
+            <span class="ml-3">Performance </span>
+          </label>
 
-            <label
-              class="flex items-center"
-              for="performance">
-              <input
-                id="performance"
-                :value="filters.showPerformance"
-                :checked="filters.showPerformance"
-                type="checkbox"
-                name="performance"
-                @change="handleFilterUpdate('showPerformance')">
-              <span class="ml-3">Performance </span>
-            </label>
+          <label
+            for="seo"
+            class="flex items-center">
+            <input
+              id="seo"
+              :value="filters.showSeo"
+              :checked="filters.showSeo"
+              type="checkbox"
+              name="seo"
+              @change="handleFilterUpdate('showSeo')">
+            <span class="ml-3">SEO</span>
+          </label>
 
-            <label
-              for="seo"
-              class="flex items-center">
-              <input
-                id="seo"
-                :value="filters.showSeo"
-                :checked="filters.showSeo"
-                type="checkbox"
-                name="seo"
-                @change="handleFilterUpdate('showSeo')">
-              <span class="ml-3">SEO</span>
-            </label>
+          <label
+            class="flex items-center"
+            for="wordFence">
+            <input
+              id="wordFence"
+              :value="filters.showWordFence"
+              :checked="filters.showWordFence"
+              type="checkbox"
+              name="wordFence"
+              @change="handleFilterUpdate('showWordFence')">
+            <span class="ml-3">WordFence</span>
+          </label>
 
-            <label
-              class="flex items-center"
-              for="wordFence">
-              <input
-                id="wordFence"
-                :value="filters.showWordFence"
-                :checked="filters.showWordFence"
-                type="checkbox"
-                name="wordFence"
-                @change="handleFilterUpdate('showWordFence')">
-              <span class="ml-3">WordFence</span>
-            </label>
+          <label
+            class="flex items-center"
+            for="conversionRate">
+            <input
+              id="conversionRate"
+              :value="filters.showConversionRate"
+              :checked="filters.showConversionRate"
+              type="checkbox"
+              name="conversionRate"
+              @change="handleFilterUpdate('showConversionRate')">
+            <span class="ml-3">Conversion Rate</span>
+          </label>
 
-            <label
-              class="flex items-center"
-              for="conversionRate">
-              <input
-                id="conversionRate"
-                :value="filters.showConversionRate"
-                :checked="filters.showConversionRate"
-                type="checkbox"
-                name="conversionRate"
-                @change="handleFilterUpdate('showConversionRate')">
-              <span class="ml-3">Conversion Rate</span>
-            </label>
+          <label
+            class="flex items-center"
+            for="upTime">
+            <input
+              id="upTime"
+              :value="filters.showUpTime"
+              :checked="filters.showUpTime"
+              type="checkbox"
+              name="upTime"
+              @change="handleFilterUpdate('showUpTime')">
+            <span class="ml-3">UpTime</span>
+          </label>
 
-            <label
-              class="flex items-center"
-              for="upTime">
-              <input
-                id="upTime"
-                :value="filters.showUpTime"
-                :checked="filters.showUpTime"
-                type="checkbox"
-                name="upTime"
-                @change="handleFilterUpdate('showUpTime')">
-              <span class="ml-3">UpTime</span>
-            </label>
-
-            <label
-              class="flex items-center"
-              for="details">
-              <input
-                id="details"
-                :value="filters.details"
-                :checked="filters.details"
-                type="checkbox"
-                name="details"
-                @change="handleFilterUpdate('details')">
-              <span class="ml-3">Details</span>
-            </label>
-          </div>
-        </transition>
-      </div>
+          <label
+            class="flex items-center"
+            for="details">
+            <input
+              id="details"
+              :value="filters.details"
+              :checked="filters.details"
+              type="checkbox"
+              name="details"
+              @change="handleFilterUpdate('details')">
+            <span class="ml-3">Details</span>
+          </label>
+        </div>
+      </transition>
     </div>
   </div>
 </template>

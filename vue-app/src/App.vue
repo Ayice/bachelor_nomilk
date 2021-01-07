@@ -53,6 +53,10 @@ export default {
     display: none;
   }
 
+  body {
+    font-family: system-ui, -apple-system, /* Firefox supports this but not yet `system-ui` */ 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji' !important;
+  }
+
   @tailwind base;
   @tailwind components;
   @tailwind utilities;

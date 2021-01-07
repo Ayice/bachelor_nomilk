@@ -1,10 +1,10 @@
 <template>
   <div class="relative mt-10">
     <div
-      class="flex justify-between align-items-center cursor-pointer"
+      class="flex justify-between items-center cursor-pointer"
       @click="showCreateWebsiteForm(!createNewSiteFormShow)">
       <p
-        class="text-lg font-medium">
+        class="text-lg font-medium break-all">
         {{ focusedWebsite.id ? `Update ${focusedWebsite.acf.domain}` : 'Create New Website' }}
       </p>
       <div class="w-5 h-5">
@@ -49,7 +49,6 @@
           <input
             id="321"
             v-model="googleAnalyticsApiKey"
-            required
             type="text"
             class="search  w-full border-0 h-full rounded-none text-xs focus:outline-none bg-transparent"
             name="fields[google_analytics_api_key]">
@@ -257,13 +256,13 @@ export default {
       } else {
         this.title = this.focusedWebsite.title.rendered;
 
-        this.googleAnalyticsApiKey = this.focusedWebsite.acf.google_analytics_api_key;
+        this.googleAnalyticsApiKey = this.focusedWebsite.acf.google_analytics_view_id;
 
         this.domain = this.focusedWebsite.acf.domain;
 
         this.host = this.focusedWebsite.acf.sftp_data.host;
 
-        this.serverName = this.focusedWebsite.acf.sftp_data.name;
+        this.serverName = this.focusedWebsite.acf.sftp_data.servername;
 
         this.password = this.focusedWebsite.acf.sftp_data.password;
 
@@ -271,7 +270,7 @@ export default {
 
         this.protocol = this.focusedWebsite.acf.sftp_data.protocol;
 
-        this.remotePath = this.focusedWebsite.acf.sftp_data.remotePath;
+        this.remotePath = this.focusedWebsite.acf.sftp_data.remote_path;
 
         this.upload_on_save = this.focusedWebsite.acf.sftp_data.upload_on_save;
 
@@ -286,16 +285,16 @@ export default {
         title: this.title,
         status: 'publish',
         fields: {
-          google_analytics_api_key: this.googleAnalyticsApiKey,
+          google_analytics_view_id: this.googleAnalyticsApiKey,
           domain: this.domain,
           sftp_data: {
-            name: this.serverName,
+            servername: this.serverName,
             host: this.host,
             protocol: this.protocol,
             port: this.port,
             username: this.username,
             password: this.password,
-            remotePath: this.remotePath,
+            remote_path: this.remotePath,
             upload_on_save: this.uploadOnSave
           }
         }

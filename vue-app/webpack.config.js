@@ -1,7 +1,30 @@
 const path = require('path');
+const glob = require('glob');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
+
+function collectSafelist() {
+  return {
+    standard: [],
+    deep: [],
+    greedy: [
+      /^w-/,
+      /^text-/,
+      /^font-/,
+      /^hover:/,
+      /^focus:/,
+      /^align-items/,
+      /^justify/,
+      /^data/
+    ]
+  };
+}
+
+const PATHS = {
+  src: path.join(__dirname, 'src')
+};
 
 module.exports = {
   mode: 'development',
@@ -61,6 +84,10 @@ module.exports = {
       inject: true,
       template: './dist/index.html'
     }),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new PurgecssPlugin({
+      safelist: collectSafelist,
+      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
+    })
   ]
 };

@@ -3,7 +3,7 @@
     v-click-outside="closeExtraData"
     class="relative cursor-pointer bg-gray-100 hover:bg-gray-200 font-medium">
     <td class="px-2">
-      {{ website.acf.domain }}
+      {{ website.title.rendered }}
     </td>
 
     <td
@@ -128,7 +128,7 @@
             </div>
 
             <div
-              v-else-if="tab === 'wordfence'"
+              v-else-if="tab === 'wordfence' && !wordfenceData.errorMsg"
               key="wordfence">
               <p class="text-lg">
                 Wordfence issues
@@ -186,9 +186,15 @@
     </td>
 
     <td
-      v-if="filters.showWordFence"
+      v-if="filters.showWordFence && !wordfenceData.errorMsg"
       class="px-2">
-      {{ wordfenceData.data ? wordfenceData.data.body.issueCounts.new : 'loading...' }}
+      {{ wordfenceData.data && !wordfenceData.errorMsg ? wordfenceData.data.body.issueCounts.new : 'loading...' }}
+    </td>
+
+    <td
+      v-else-if="filters.showWordFence && wordfenceData.errorMsg"
+      class="px-2">
+      {{ wordfenceData.errorMsg }}
     </td>
 
     <td
@@ -276,6 +282,7 @@
 <script>
 import { getLightHouseData } from '../utils/api';
 import { mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   filters: {
@@ -319,10 +326,6 @@ export default {
     filters: {
       type: Object,
       required: true
-    },
-    wordfenceData: {
-      type: Object,
-      required: true
     }
   },
   data() {
@@ -334,6 +337,7 @@ export default {
       lightHouseData: {},
       opportunities: [],
       metrics: [],
+      wordfenceData: {},
       loadingExperience: {},
       tabs: ['metrics', 'opportunities', 'wordfence'],
       tab: 'metrics'
@@ -350,9 +354,30 @@ export default {
   },
   mounted() {
     this.fetchLHData();
+    this.getWordFenceData();
   },
   methods: {
     ...mapActions(['removeWebsite']),
+
+    getWordFenceData() {
+      const form2 = new FormData();
+
+      form2.append('action', 'get_wordfence_nonce');
+
+      axios.post(`${this.website.acf.domain}/wp-admin/admin-ajax.php`, form2)
+        .then(res => {
+          const form = new FormData();
+
+          form.append('nonce', res.data.data.nonce);
+
+          form.append('action', 'get_wordfence_data');
+
+          axios.post(`${this.website.acf.domain}/wp-admin/admin-ajax.php`, form)
+            .then(result => this.wordfenceData = result.data);
+        }).catch(() => {
+          this.wordfenceData.errorMsg = 'N/A';
+        });
+    },
     copySFTPData() {
       const sftpData = document.getElementById('sftpData');
 
