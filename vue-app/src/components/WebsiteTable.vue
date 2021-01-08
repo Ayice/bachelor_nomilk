@@ -46,7 +46,7 @@
           <th
             v-if="filters.showUpTime"
             class="px-2">
-            Uptime
+            Users 2021
           </th>
 
           <th
@@ -147,7 +147,6 @@ export default {
       }
     }
   },
-
   methods: {
     ...mapActions(['setFocusedWebsite', 'showCreateWebsiteForm']),
     focusWebsite(website) {
