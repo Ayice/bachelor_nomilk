@@ -279,3 +279,11 @@ add_filter('login_redirect', 'admin_default_page');
 add_filter('acf/rest_api/field_settings/show_in_rest', '__return_true');
 
 add_filter('acf/rest_api/field_settings/edit_in_rest', '__return_true');
+
+
+add_action('wp_enqueue_scripts', 'enqueue_google_analytics');
+
+function enqueue_google_analytics()
+{
+  wp_enqueue_script('google_analytics', 'https://apis.google.com/js/client:platform.js', array(), false, true);
+}

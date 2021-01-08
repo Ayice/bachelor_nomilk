@@ -233,14 +233,27 @@
     </td>
 
     <td
-      v-if="filters.showConversionRate"
+      v-if="filters.showConversionRate && website.acf.google_analytics_view_id"
       class="px-2 relative">
-      {{ website.id }}
+      {{ conversionRate ? conversionRate : 'Loading' }}
     </td>
 
     <td
-      v-if="filters.showUpTime"
-      class="relative px-2">
+      v-else-if="filters.showConversionRate && !website.acf.google_analytics_view_id"
+      class="px-2 relative">
+      N/A
+    </td>
+
+    <td
+      v-if="filters.showUpTime && website.acf.google_analytics_view_id"
+      class="px-2 relative">
+      {{ users ? users : 'Loading' }}
+    </td>
+
+    <td
+      v-else-if="filters.showUpTime && !website.acf.google_analytics_view_id"
+      class="px-2 relative">
+      N/A
     </td>
 
     <td
@@ -332,6 +345,8 @@ export default {
     return {
       // eslint-disable-next-line
       wpData: wpData,
+      conversionRate: '',
+      users: '',
       showMore: false,
       copied: false,
       lightHouseData: {},
@@ -339,7 +354,7 @@ export default {
       metrics: [],
       wordfenceData: {},
       loadingExperience: {},
-      tabs: ['metrics', 'opportunities', 'wordfence'],
+      tabs: ['metrics', 'opportunities'],
       tab: 'metrics'
     };
   },
@@ -355,10 +370,75 @@ export default {
   mounted() {
     this.fetchLHData();
     this.getWordFenceData();
+
+    if (this.wordfenceData.success) {
+      this.tabs.push('wordfence');
+    }
+
+    if (this.website.acf.google_analytics_view_id) {
+      this.signInToGoogle();
+    }
   },
   methods: {
     ...mapActions(['removeWebsite']),
+    signInToGoogle() {
+      gapi.load('auth2', () => {
+        gapi.auth2.init({
+          client_id: '<client-it>'
+        }).then(auth2 => {
+          if (!auth2.isSignedIn.get()) {
+            auth2.signIn()
+              .then(() => {
+                this.queryReports();
+              });
+          } else {
+            this.queryReports();
+          }
+        });
+      });
+    },
+    queryReports() {
+      const VIEW_ID = this.website.acf.google_analytics_view_id;
 
+      gapi.client.request({
+        path: '/v4/reports:batchGet',
+        root: 'https://analyticsreporting.googleapis.com/',
+        method: 'POST',
+        body: {
+          reportRequests: [{
+            viewId: VIEW_ID,
+            dateRanges: [{
+              startDate: '2021-01-01',
+              endDate: 'today'
+            }],
+            metrics: [{
+              expression: 'ga:goalConversionRateAll',
+              alias: 'conversionRate'
+            }
+            ]
+          },
+          {
+            viewId: VIEW_ID,
+            dateRanges: [{
+              startDate: '2021-01-01',
+              endDate: 'today'
+            }],
+            metrics: [{
+              expression: 'ga:users',
+              alias: 'users'
+            }]
+          }]
+        }
+      }).then(res => {
+        const conRate = res.result.reports.find(report => report.columnHeader.metricHeader.metricHeaderEntries[0].name === 'conversionRate');
+
+        this.conversionRate = conRate.data.totals[0].values[0];
+
+        const users = res.result.reports.find(report => report.columnHeader.metricHeader.metricHeaderEntries[0].name === 'users');
+
+        this.users = users.data.totals[0].values[0];
+      });
+    },
     getWordFenceData() {
       const form2 = new FormData();
 
