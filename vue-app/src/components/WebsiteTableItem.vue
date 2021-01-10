@@ -128,7 +128,7 @@
             </div>
 
             <div
-              v-else-if="tab === 'wordfence' && !wordfenceData.errorMsg"
+              v-else-if="tab === 'wordfence'"
               key="wordfence">
               <p class="text-lg">
                 Wordfence issues
@@ -367,13 +367,16 @@ export default {
       return id * numberOfTabsWidth + '%';
     }
   },
+  watch: {
+    wordfenceData() {
+      if (this.wordfenceData.success) {
+        this.tabs.push('wordfence');
+      }
+    }
+  },
   mounted() {
     this.fetchLHData();
     this.getWordFenceData();
-
-    if (this.wordfenceData.success) {
-      this.tabs.push('wordfence');
-    }
 
     if (this.website.acf.google_analytics_view_id) {
       this.signInToGoogle();
@@ -384,7 +387,7 @@ export default {
     signInToGoogle() {
       gapi.load('auth2', () => {
         gapi.auth2.init({
-          client_id: '<client-it>'
+          client_id: '<client-id>'
         }).then(auth2 => {
           if (!auth2.isSignedIn.get()) {
             auth2.signIn()

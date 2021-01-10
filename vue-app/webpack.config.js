@@ -1,9 +1,9 @@
 const path = require('path');
 const glob = require('glob');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 function collectSafelist() {
   return {
@@ -80,14 +80,13 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: './dist/index.html'
-    }),
     new MiniCssExtractPlugin(),
     new PurgecssPlugin({
       safelist: collectSafelist,
       paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
     })
-  ]
+  ],
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
+  }
 };

@@ -309,8 +309,6 @@ export default {
 
         postData.id = this.focusedWebsite.id;
 
-        console.log(data);
-
         this.updateWebsite(data)
           .then(() => {
             this.setFocusedWebsite({});
